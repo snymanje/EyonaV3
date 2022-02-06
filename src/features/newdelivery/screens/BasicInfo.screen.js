@@ -39,17 +39,19 @@ export const BasicInfo = ({ navigation }) => {
   };
 
   return (
-    <Box mt={8} flex={1} justifyContent="space-between">
+    <Box pt={8} flex={1} justifyContent="space-between" bg="white">
       <VStack width="100%" px={5} space={8}>
         <FormControl isRequired>
           <FormControl.Label
             _text={{
               bold: true,
             }}
+            pl={2}
           >
             Order Number
           </FormControl.Label>
           <Input
+            variant="underlined"
             placeholder="1234567"
             onChangeText={(value) => setData({ ...formData, name: value })}
             size="xl"
@@ -60,10 +62,12 @@ export const BasicInfo = ({ navigation }) => {
             _text={{
               bold: true,
             }}
+            pl={2}
           >
             Site Name
           </FormControl.Label>
           <Select
+            variant="underlined"
             selectedValue={service}
             minWidth="200"
             accessibilityLabel="Choose Service"
