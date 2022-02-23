@@ -7,7 +7,7 @@ const supabaseUrl = "https://hvyovmyxynoswtgnqybk.supabase.co";
 const supabaseKey = SUPABASE_KEY;
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   localStorage: AsyncStorage,
-  //detectSessionInUrl: false,
+  detectSessionInUrl: false,
   // autoRefreshToken: true,
   // persistSession: true
   // url: string,

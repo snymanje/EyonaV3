@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect } from "react";
-import { supabase } from "../../services/supabase/initSupabase";
+import { supabase } from "../../lib/supabase";
 
 export const DeliveriesContext = createContext();
 

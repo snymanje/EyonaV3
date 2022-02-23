@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import "./src/services/supabase/initSupabase";
-
 import { NativeBaseProvider, Text, Box } from "native-base";
 
 import { Navigation } from "./src/infrastructure/navigation/index";
