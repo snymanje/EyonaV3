@@ -11,7 +11,7 @@ import { AuthenticationContextProvider } from './src/services/authentication/Aut
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['NativeBase:']);
 
-export default function App() {
+export const App = () => {
 	return (
 		<NativeBaseProvider theme={theme}>
 			<AuthenticationContextProvider>
@@ -21,4 +21,4 @@ export default function App() {
 			</AuthenticationContextProvider>
 		</NativeBaseProvider>
 	);
-}
+};

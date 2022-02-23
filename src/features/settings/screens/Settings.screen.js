@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import styled from "styled-components/native";
-import { Text } from "react-native";
+import styled from 'styled-components/native';
+import { Text } from 'react-native';
 
 const Screen = styled.View`
   flex: 1;
@@ -12,9 +12,9 @@ const Screen = styled.View`
 // import { Text } from "../../../components/typography/text.component";
 
 export const SettingsScreen = () => {
-  return (
-    <Screen>
-      <Text variant="body">Feature 3</Text>
-    </Screen>
-  );
+	return (
+		<Screen>
+			<Text variant="body">Feature 3</Text>
+		</Screen>
+	);
 };

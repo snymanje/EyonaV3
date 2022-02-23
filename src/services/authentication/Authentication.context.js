@@ -28,11 +28,10 @@ export const AuthenticationContextProvider = ({ children }) => {
 			setUser(user);
 		} catch (error) {
 			console.log(error.error_description || error.message);
+			setError(error);
 		} finally {
 			setIsLoading(false);
 		}
-
-		setIsLoading(false);
 	};
 
 	const onLogin = async (email, password) => {
@@ -45,11 +44,10 @@ export const AuthenticationContextProvider = ({ children }) => {
 			setUser(user);
 		} catch (error) {
 			console.log(error.error_description || error.message);
+			setError(error);
 		} finally {
 			setIsLoading(false);
 		}
-
-		setIsLoading(false);
 	};
 
 	const onLogout = async () => {
@@ -58,6 +56,7 @@ export const AuthenticationContextProvider = ({ children }) => {
 			setUser(null);
 		} catch (error) {
 			console.log(error.error_description || error.message);
+			setError(error);
 		}
 	};
 
