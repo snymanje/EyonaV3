@@ -37,10 +37,11 @@ export const AuthenticationContextProvider = ({ children }) => {
 	const onLogin = async (email, password) => {
 		try {
 			setIsLoading(true);
-			const { user } = await supabase.auth.signIn({
+			const { user, error } = await supabase.auth.signIn({
 				email,
 				password,
 			});
+			if(error) throw error;
 			setUser(user);
 		} catch (error) {
 			console.log(error.error_description || error.message);
