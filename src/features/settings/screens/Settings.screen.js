@@ -15,12 +15,12 @@ const Screen = styled.View`
 // import { Text } from "../../../components/typography/text.component";
 
 export const SettingsScreen = () => {
-	const { onLogout, error  } = useContext(AuthenticationContext);
+  const { onLogout, error } = useContext(AuthenticationContext);
 
-	return (
-		<Screen>
-			<Text variant="body">Feature 3</Text>
-			<Button onPress={() => onLogout() } >Logout</Button>
-		</Screen>
-	);
+  return (
+    <Screen>
+      <Text variant="body">Feature 3</Text>
+      <Button onPress={() => onLogout()}>Logout</Button>
+    </Screen>
+  );
 };
