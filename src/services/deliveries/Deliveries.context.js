@@ -7,17 +7,18 @@ export const DeliveriesContext = createContext();
 
 export const DeliveriesContextProvider = ({ children }) => {
   const [deliveries, setDeliveries] = useState([]);
+  const [sites, setSites] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [fechError, setFechError] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
-    const getdata = async () => {
+    const getMyDeliveries = async () => {
       try {
         const { data, error } = await supabase.from('Deliveries').select();
         if (error) {
           console.log(error);
-          setError(error);
+          setFechError(error);
           setIsLoading(false);
           return null;
         }
@@ -26,14 +27,33 @@ export const DeliveriesContextProvider = ({ children }) => {
         setIsLoading(false);
       } catch (error) {
         console.log(error);
-        setError(error);
+        setFechError(error);
         setIsLoading(false);
       }
     };
-    getdata();
+    const getSites = async () => {
+      try {
+        const { data, error } = await supabase.from('Sites').select();
+        if (error) {
+          console.log(error);
+          setFechError(error);
+          setIsLoading(false);
+          return null;
+        }
+        console.log(data);
+        setSites(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setFechError(error);
+        setIsLoading(false);
+      }
+    };
+    getSites();
+    getMyDeliveries();
   }, []);
 
-  return <DeliveriesContext.Provider value={{ deliveries, isLoading, error }}>{children}</DeliveriesContext.Provider>;
+  return <DeliveriesContext.Provider value={{ deliveries, sites, isLoading, fechError }}>{children}</DeliveriesContext.Provider>;
 };
 
 DeliveriesContextProvider.propTypes = {

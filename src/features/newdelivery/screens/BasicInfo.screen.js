@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Text, Box, Button, VStack, FormControl, Input, Center, Select, CheckIcon, Heading } from 'native-base';
-import { StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Box, Button, VStack, FormControl, Input, CheckIcon, Heading, Select, Text } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 
 export const BasicInfo = ({ navigation }) => {
   const [formData, setData] = useState({});
-  const [errors, setErrors] = useState({});
 
-  const [service, setService] = useState('');
+  const { sites } = useContext(DeliveriesContext);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -25,7 +25,7 @@ export const BasicInfo = ({ navigation }) => {
             >
               Order Number
             </FormControl.Label>
-            <Input variant="underlined" placeholder="1234567" onChangeText={(value) => setData({ ...formData, name: value })} size="xl" />
+            <Input variant="underlined" placeholder="1234567" onChangeText={(value) => setData({ ...formData, order_number: value })} size="xl" />
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label
@@ -38,23 +38,24 @@ export const BasicInfo = ({ navigation }) => {
             </FormControl.Label>
             <Select
               variant="underlined"
-              selectedValue={service}
+              selectedValue={formData.site_name}
               minWidth="200"
-              accessibilityLabel="Choose Service"
-              placeholder="Choose Service"
+              accessibilityLabel="Choose Site"
+              placeholder="Choose Site"
               _selectedItem={{
                 bg: 'gray.300',
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setService(itemValue)}
+              onValueChange={(value) => {
+                setData({ ...formData, site_name: value });
+                console.log(formData);
+              }}
               size="xl"
             >
-              <Select.Item label="UX Research" value="ux" />
-              <Select.Item label="Web Development" value="web" />
-              <Select.Item label="Cross Platform Development" value="cross" />
-              <Select.Item label="UI Designing" value="ui" />
-              <Select.Item label="Backend Development" value="backend" />
+              {sites.map((site) => (
+                <Select.Item label={site.SiteName} value={site.SiteName} />
+              ))}
             </Select>
           </FormControl>
         </VStack>
