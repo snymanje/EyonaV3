@@ -31,6 +31,7 @@ module.exports = {
     // allow .js files to contain JSX code
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'import/prefer-default-export': 'off',
-    'react/function-component-definition': 'off'
+    'react/function-component-definition': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
   },
 };

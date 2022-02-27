@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { supabase } from '../../lib/supabase';
+import { getActiveSession, loginRequest, registerRequest, logoutRequest } from './authentication.service';
 
 export const AuthenticationContext = createContext();
 
@@ -11,25 +11,16 @@ export const AuthenticationContextProvider = ({ children }) => {
   const [authError, setAuthError] = useState(null);
 
   useEffect(() => {
-    setUser(supabase.auth.session());
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session);
-    });
+    setUser(getActiveSession);
   }, [user]);
 
   const onRegister = async (email, password) => {
     try {
       setIsLoading(true);
       setAuthError(null);
-      const { profile, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) throw error;
+      const profile = await registerRequest(email, password);
       setUser(profile);
     } catch (error) {
-      console.log(error.error_description || error.message);
       setAuthError(error);
     } finally {
       setIsLoading(false);
@@ -40,15 +31,10 @@ export const AuthenticationContextProvider = ({ children }) => {
     try {
       setIsLoading(true);
       setAuthError(null);
-      const { profile, error } = await supabase.auth.signIn({
-        email,
-        password,
-      });
-      if (error) throw error;
+      const profile = await loginRequest(email, password);
       setUser(profile);
     } catch (error) {
-      console.log(error.error_description || error.message);
-      setAuthError(authError);
+      setAuthError(error);
     } finally {
       setIsLoading(false);
     }
@@ -56,10 +42,9 @@ export const AuthenticationContextProvider = ({ children }) => {
 
   const onLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      await logoutRequest();
       setUser(null);
     } catch (error) {
-      console.log(error.error_description || error.message);
       setAuthError(error);
     }
   };
@@ -71,8 +56,8 @@ export const AuthenticationContextProvider = ({ children }) => {
         user,
         isLoading,
         authError,
-        onLogin,
         onRegister,
+        onLogin,
         onLogout,
       }}
     >
