@@ -1,13 +1,17 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Box, Button, VStack, FormControl, Input, CheckIcon, Heading, Select, Text } from 'native-base';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
+import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
 export const BasicInfo = ({ navigation }) => {
-  const [formData, setData] = useState({});
-
   const { sites } = useContext(DeliveriesContext);
+  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
+  /* 
+  useEffect(() => {
+    console.log(delivery);
+  }, [delivery]); */
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -25,7 +29,7 @@ export const BasicInfo = ({ navigation }) => {
             >
               Order Number
             </FormControl.Label>
-            <Input variant="underlined" placeholder="1234567" onChangeText={(value) => setData({ ...formData, order_number: value })} size="xl" />
+            <Input variant="underlined" placeholder="1234567" onChangeText={(value) => UPDATE_FORM({ order_number: value })} size="xl" />
           </FormControl>
           <FormControl isRequired>
             <FormControl.Label
@@ -38,7 +42,7 @@ export const BasicInfo = ({ navigation }) => {
             </FormControl.Label>
             <Select
               variant="underlined"
-              selectedValue={formData.site_name}
+              selectedValue={delivery.site_name}
               minWidth="200"
               accessibilityLabel="Choose Site"
               placeholder="Choose Site"
@@ -48,8 +52,8 @@ export const BasicInfo = ({ navigation }) => {
               }}
               mt={1}
               onValueChange={(value) => {
-                setData({ ...formData, site_name: value });
-                console.log(formData);
+                UPDATE_FORM({ site_name: value });
+                console.log(delivery);
               }}
               size="xl"
             >
@@ -58,6 +62,7 @@ export const BasicInfo = ({ navigation }) => {
               ))}
             </Select>
           </FormControl>
+          <Text>{delivery.site_name}</Text>
         </VStack>
         <VStack width="100%" px={5} mb={8}>
           <Button
@@ -67,7 +72,7 @@ export const BasicInfo = ({ navigation }) => {
             mt="5"
             colorScheme="primary"
           >
-            Next
+            Save & Continue
           </Button>
         </VStack>
       </Box>
