@@ -4,7 +4,7 @@ import { Box, Button, VStack, FormControl, Input, Heading, Text, KeyboardAvoidin
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const Tank1Screen = ({ navigation }) => {
+export const Tank2Screen = ({ navigation }) => {
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const [fuelType, setFuelType] = useState(null);
@@ -21,7 +21,7 @@ export const Tank1Screen = ({ navigation }) => {
       >
         <Box safeAreaTop="16">
           <Heading size="xl" textAlign="center" pt={4}>
-            Tank 1 Information
+            Tank 2 Information
           </Heading>
           <Box mt={8} flex={1} justifyContent="space-between">
             <VStack width="100%" px={5} space={8}>
@@ -36,7 +36,7 @@ export const Tank1Screen = ({ navigation }) => {
                 </FormControl.Label>
                 <Select
                   variant="underlined"
-                  selectedValue={delivery.tank1_Product}
+                  selectedValue={delivery.tank2_Product}
                   minWidth="200"
                   accessibilityLabel="Choose Product"
                   placeholder="Choose Product"
@@ -46,7 +46,7 @@ export const Tank1Screen = ({ navigation }) => {
                   }}
                   mt={1}
                   onValueChange={(value) => {
-                    UPDATE_FORM({ tank1_Product: value });
+                    UPDATE_FORM({ tank2_Product: value });
                   }}
                   size="xl"
                 >
@@ -67,7 +67,7 @@ export const Tank1Screen = ({ navigation }) => {
                 </FormControl.Label>
                 <Select
                   variant="underlined"
-                  selectedValue={delivery.tank1_size}
+                  selectedValue={delivery.tank2_size}
                   minWidth="200"
                   accessibilityLabel="Choose Tank Size"
                   placeholder="Choose Tank Size"
@@ -77,7 +77,7 @@ export const Tank1Screen = ({ navigation }) => {
                   }}
                   mt={1}
                   onValueChange={(value) => {
-                    UPDATE_FORM({ tank1_size: value });
+                    UPDATE_FORM({ tank2_size: value });
                   }}
                   size="xl"
                 >
@@ -98,9 +98,9 @@ export const Tank1Screen = ({ navigation }) => {
                 <Input
                   variant="underlined"
                   placeholder="120399"
-                  value={delivery.tank1_reading_before}
+                  value={delivery.tank2_reading_before}
                   size="xl"
-                  onChangeText={(value) => UPDATE_FORM({ tank1_reading_before: value })}
+                  onChangeText={(value) => UPDATE_FORM({ tank2_reading_before: value })}
                   keyboardType="numeric"
                 />
               </FormControl>
@@ -116,9 +116,9 @@ export const Tank1Screen = ({ navigation }) => {
                 <Input
                   variant="underlined"
                   placeholder="120399"
-                  value={delivery.tank1_reading_after}
+                  value={delivery.tank2_reading_after}
                   size="xl"
-                  onChangeText={(value) => UPDATE_FORM({ tank1_reading_after: value })}
+                  onChangeText={(value) => UPDATE_FORM({ tank2_reading_after: value })}
                   keyboardType="numeric"
                 />
               </FormControl>
@@ -128,7 +128,7 @@ export const Tank1Screen = ({ navigation }) => {
             <VStack width="100%" px={5} mb={2}>
               <Button
                 onPress={() => {
-                  navigation.navigate('Tank2Screen');
+                  console.log(delivery);
                 }}
                 mt="5"
                 colorScheme="primary"
@@ -152,6 +152,6 @@ export const Tank1Screen = ({ navigation }) => {
   );
 };
 
-Tank1Screen.propTypes = {
+Tank2Screen.propTypes = {
   navigation: PropTypes.element.isRequired,
 };
