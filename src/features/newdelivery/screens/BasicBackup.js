@@ -1,20 +1,25 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, VStack, FormControl, Input, Heading, Text, KeyboardAvoidingView, ScrollView, Select, CheckIcon } from 'native-base';
+import { Box, Button, VStack, FormControl, Input, CheckIcon, Heading, Select, ScrollView, KeyboardAvoidingView } from 'native-base';
 
+import { Platform } from 'react-native';
+import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const Tank2Screen = ({ navigation }) => {
+export const BasicInfo = ({ navigation }) => {
+  const { sites } = useContext(DeliveriesContext);
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
-  const [fuelType, setFuelType] = useState(null);
+  useEffect(() => {
+    console.log(delivery);
+  }, [delivery]);
 
   return (
     <Box pt={4} flex={1} bg="white">
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
         <Box flex={1}>
           <Heading size="xl" textAlign="center">
-            Tank 2 Information
+            Site Information
           </Heading>
           <ScrollView
             flex={1}
@@ -33,28 +38,45 @@ export const Tank2Screen = ({ navigation }) => {
                     }}
                     pl={2}
                   >
-                    Product
+                    Order Number
+                  </FormControl.Label>
+                  <Input
+                    variant="underlined"
+                    placeholder="1234567"
+                    onChangeText={(value) => UPDATE_FORM({ order_number: value.toUpperCase() })}
+                    size="xl"
+                    autoCapitalize="characters"
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormControl.Label
+                    _text={{
+                      bold: true,
+                    }}
+                    pl={2}
+                  >
+                    Site Name
                   </FormControl.Label>
                   <Select
                     variant="underlined"
-                    selectedValue={delivery.tank2_Product}
+                    selectedValue={delivery.site_name}
                     minWidth="200"
-                    accessibilityLabel="Choose Product"
-                    placeholder="Choose Product"
+                    accessibilityLabel="Choose Site"
+                    placeholder="Choose Site"
                     _selectedItem={{
                       bg: 'gray.300',
                       endIcon: <CheckIcon size="5" />,
                     }}
                     mt={1}
                     onValueChange={(value) => {
-                      UPDATE_FORM({ tank2_Product: value });
+                      const accNumber = sites.filter((site) => site.SiteName === value)[0].AccountNumber;
+                      UPDATE_FORM({ site_name: value, acc_number: accNumber });
                     }}
                     size="xl"
                   >
-                    <Select.Item label="D50" value="D50" />
-                    <Select.Item label="ULP" value="ULP" />
-                    <Select.Item label="Paraffin" value="Paraffin" />
-                    <Select.Item label="N/A" value="N/A" />
+                    {sites.map((site) => (
+                      <Select.Item label={site.SiteName} value={site.SiteName} />
+                    ))}
                   </Select>
                 </FormControl>
                 <FormControl isRequired>
@@ -64,28 +86,9 @@ export const Tank2Screen = ({ navigation }) => {
                     }}
                     pl={2}
                   >
-                    Tank Size
+                    Acc Number
                   </FormControl.Label>
-                  <Select
-                    variant="underlined"
-                    selectedValue={delivery.tank2_size}
-                    minWidth="200"
-                    accessibilityLabel="Choose Tank Size"
-                    placeholder="Choose Tank Size"
-                    _selectedItem={{
-                      bg: 'gray.300',
-                      endIcon: <CheckIcon size="5" />,
-                    }}
-                    mt={1}
-                    onValueChange={(value) => {
-                      UPDATE_FORM({ tank2_size: value });
-                    }}
-                    size="xl"
-                  >
-                    <Select.Item label="9000" value="9000" />
-                    <Select.Item label="23000" value="23000" />
-                    <Select.Item label="N/A" value="N/A" />
-                  </Select>
+                  <Input variant="underlined" placeholder="1234567" value={delivery.acc_number} size="xl" isDisabled="true" />
                 </FormControl>
                 <FormControl isRequired>
                   <FormControl.Label
@@ -94,14 +97,14 @@ export const Tank2Screen = ({ navigation }) => {
                     }}
                     pl={2}
                   >
-                    Reading Before
+                    Odometer
                   </FormControl.Label>
                   <Input
                     variant="underlined"
                     placeholder="120399"
-                    value={delivery.tank2_reading_before}
+                    value={delivery.odometer}
                     size="xl"
-                    onChangeText={(value) => UPDATE_FORM({ tank2_reading_before: value })}
+                    onChangeText={(value) => UPDATE_FORM({ odometer: value })}
                     keyboardType="numeric"
                   />
                 </FormControl>
@@ -112,42 +115,28 @@ export const Tank2Screen = ({ navigation }) => {
                     }}
                     pl={2}
                   >
-                    Reading After
+                    Vehicle Reg No
                   </FormControl.Label>
                   <Input
                     variant="underlined"
                     placeholder="120399"
-                    value={delivery.tank2_reading_after}
+                    value={delivery.vehRegNum}
                     size="xl"
-                    onChangeText={(value) => UPDATE_FORM({ tank2_reading_after: value })}
-                    keyboardType="numeric"
+                    onChangeText={(value) => UPDATE_FORM({ veh_reg_num: value })}
+                    autoCapitalize="characters"
                   />
                 </FormControl>
-                <Heading size="md" textAlign="center">
-                  Total Delivered
-                </Heading>
-                <Heading size="lg" textAlign="center">
-                  0
-                </Heading>
               </VStack>
-              <VStack width="100%" px={5} mb={2}>
+              <VStack width="100%" px={5} mb={1}>
                 <Button
+                  size="lg"
                   onPress={() => {
-                    console.log(delivery);
+                    navigation.navigate('Tank1Screen');
                   }}
                   mt="5"
                   colorScheme="primary"
                 >
                   Save & Continue
-                </Button>
-                <Button
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                  mt="2"
-                  colorScheme="coolGray"
-                >
-                  Back
                 </Button>
               </VStack>
             </Box>
@@ -158,6 +147,6 @@ export const Tank2Screen = ({ navigation }) => {
   );
 };
 
-Tank2Screen.propTypes = {
+BasicInfo.propTypes = {
   navigation: PropTypes.element.isRequired,
 };

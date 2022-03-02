@@ -10,7 +10,7 @@ export const Tank1Screen = ({ navigation }) => {
   const [fuelType, setFuelType] = useState(null);
 
   return (
-    <Box safeAreaTop="16" flex={1} bg="white">
+    <Box pt={4} flex={1} bg="white">
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
         <Box flex={1}>
           <Heading size="xl" textAlign="center">
@@ -123,18 +123,34 @@ export const Tank1Screen = ({ navigation }) => {
                     keyboardType="numeric"
                   />
                 </FormControl>
-                <Text>Total Delivered</Text>
-                <Text>0</Text>
+                <Button
+                  size="sm"
+                  onPress={() => {
+                    navigation.navigate('Tank2Screen');
+                  }}
+                  colorScheme="success"
+                >
+                  Add ATG Slip
+                </Button>
+                <VStack width="100%" px={5} space={2}>
+                  <Heading size="md" textAlign="center">
+                    Total Delivered
+                  </Heading>
+                  <Heading size="lg" textAlign="center">
+                    0
+                  </Heading>
+                </VStack>
               </VStack>
               <VStack width="100%" px={5} mb={2}>
                 <Button
+                  size="lg"
                   onPress={() => {
                     navigation.navigate('Tank2Screen');
                   }}
                   mt="5"
                   colorScheme="primary"
                 >
-                  Save & Continue
+                  Continue
                 </Button>
                 <Button
                   onPress={() => {

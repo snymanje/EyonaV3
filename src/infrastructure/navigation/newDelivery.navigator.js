@@ -18,12 +18,12 @@ export const NewDeliveriesNavigator = () => (
       screenOptions={{
         headerBackTitle: 'Back',
         /*  ...TransitionPresets.ModalSlideFromBottomIOS, */
-        headerShown: false,
+        headerShown: true,
       }}
     >
-      <NewDeliveryStack.Screen name="BasicInfoScreen" component={BasicInfo} options={{ title: 'Basic Information' }} />
-      <NewDeliveryStack.Screen name="Tank1Screen" component={Tank1Screen} options={{ title: 'Tank 1 Details' }} /* initialParams={{ capturedImage: null }} */ />
-      <NewDeliveryStack.Screen name="Tank2Screen" component={Tank2Screen} options={{ title: 'Tank 2 Details' }} />
+      <NewDeliveryStack.Screen name="BasicInfoScreen" component={BasicInfo} options={{ title: 'Capture New Delivery' }} />
+      <NewDeliveryStack.Screen name="Tank1Screen" component={Tank1Screen} options={{ title: 'Capture New Delivery' }} /* initialParams={{ capturedImage: null }} */ />
+      <NewDeliveryStack.Screen name="Tank2Screen" component={Tank2Screen} options={{ title: 'Capture New Delivery' }} />
       {/*
       <NewDeliveryStack.Screen
         name="CaptureATGSlipScreen"
