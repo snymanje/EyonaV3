@@ -69,7 +69,7 @@ export const BasicInfo = () => {
                       />
                       <FormControl.ErrorMessage>{formProps.touched.OrderNumber && formProps.errors.OrderNumber}</FormControl.ErrorMessage>
                     </FormControl>
-                    <FormControl isRequired>
+                    <FormControl isRequired isInvalid={'SiteName' in formProps.errors}>
                       <FormControl.Label
                         _text={{
                           bold: true,
@@ -99,7 +99,7 @@ export const BasicInfo = () => {
                           <Select.Item label={site.SiteName} value={site.SiteName} />
                         ))}
                       </Select>
-                      <Text>{formProps.touched.SiteName && formProps.errors.SiteName}</Text>
+                      <FormControl.ErrorMessage>{formProps.touched.SiteName && formProps.errors.SiteName}</FormControl.ErrorMessage>
                     </FormControl>
                     <Button
                       size="lg"
