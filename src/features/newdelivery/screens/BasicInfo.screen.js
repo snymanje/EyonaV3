@@ -1,13 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, VStack, FormControl, Input, CheckIcon, Heading, Select, ScrollView, KeyboardAvoidingView } from 'native-base';
+import { Box, Button, VStack, FormControl, Input, Text, Heading, Select, ScrollView, KeyboardAvoidingView } from 'native-base';
 import { Formik } from 'formik';
+import * as yup from 'yup';
 
 import { Platform } from 'react-native';
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const BasicInfo = ({ navigation }) => {
+const deliverySchema = yup.object({
+  OrderNumber: yup.string().required(),
+});
+
+export const BasicInfo = () => {
   const { sites } = useContext(DeliveriesContext);
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
@@ -33,11 +38,11 @@ export const BasicInfo = ({ navigation }) => {
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={8}>
                 <Formik
+                  validationSchema={deliverySchema}
                   initialValues={{
-                    title: '',
+                    ...delivery,
                   }}
                   onSubmit={(values) => {
-                    console.log(values);
                     UPDATE_FORM({ ...delivery, ...values });
                   }}
                 >
@@ -55,11 +60,14 @@ export const BasicInfo = ({ navigation }) => {
                         <Input
                           variant="underlined"
                           placeholder="1234567"
-                          onChangeText={formProps.handleChange('title')}
-                          value={formProps.values.title}
+                          onChangeText={formProps.handleChange('OrderNumber')}
+                          value={formProps.values.OrderNumber}
+                          onBlur={formProps.handleBlur('OrderNumber')}
                           size="xl"
                           autoCapitalize="characters"
                         />
+
+                        <Text>{formProps.touched.OrderNumber && formProps.errors.OrderNumber}</Text>
                       </FormControl>
                       <Button
                         size="lg"
@@ -84,6 +92,6 @@ export const BasicInfo = ({ navigation }) => {
   );
 };
 
-BasicInfo.propTypes = {
+/* BasicInfo.propTypes = {
   navigation: PropTypes.element.isRequired,
-};
+}; */
