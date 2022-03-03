@@ -11,7 +11,7 @@ import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.
 const deliverySchema = yup.object({
   OrderNumber: yup.string().required(),
   SiteName: yup.string().required(),
-  /* AccountNumber: yup.string().required(), */
+  AccountNumber: yup.string().required(),
 });
 
 export const BasicInfo = () => {
@@ -21,8 +21,6 @@ export const BasicInfo = () => {
   useEffect(() => {
     console.log(delivery);
   }, [delivery]);
-
-  let AccNumber = null;
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -84,6 +82,7 @@ export const BasicInfo = () => {
                       <Select
                         variant="underlined"
                         selectedValue={formProps.values.SiteName}
+                        onBlur={formProps.handleBlur('SiteName')}
                         minWidth="200"
                         accessibilityLabel="Choose Site"
                         placeholder="Choose Site"
@@ -93,8 +92,8 @@ export const BasicInfo = () => {
                         }}
                         mt={1}
                         onValueChange={(value) => {
-                          AccNumber = sites.filter((site) => site.SiteName === value)[0].AccountNumber;
                           formProps.handleChange('SiteName');
+                          formProps.setFieldValue('AccountNumber', sites.filter((site) => site.SiteName === value)[0].AccountNumber);
                         }}
                         size="xl"
                       >
@@ -113,7 +112,7 @@ export const BasicInfo = () => {
                       >
                         Account Number
                       </FormControl.Label>
-                      <Input variant="underlined" value={AccNumber} size="xl" isDisabled="true" />
+                      <Input variant="underlined" value={formProps.values.AccountNumber} size="xl" isDisabled="true" />
                       <FormControl.ErrorMessage>{formProps.touched.AccountNumber && formProps.errors.AccountNumber}</FormControl.ErrorMessage>
                     </FormControl>
                     <Button
