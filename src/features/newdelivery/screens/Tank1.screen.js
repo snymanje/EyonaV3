@@ -22,13 +22,13 @@ export const Tank1Screen = ({ navigation }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
     getValues,
+    formState: { errors, isValid },
   } = useForm({
-    mode: 'onChange',
     defaultValues: { ...delivery },
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
     UPDATE_FORM({ ...delivery, ...data });
     navigation.navigate('Tank2Screen');
@@ -37,6 +37,7 @@ export const Tank1Screen = ({ navigation }) => {
   useEffect(() => {
     console.log(delivery);
   }, [delivery]);
+
   return (
     <Box pt={4} flex={1} bg="white">
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
@@ -160,7 +161,7 @@ export const Tank1Screen = ({ navigation }) => {
                     Total Delivered
                   </Heading>
                   <Heading size="lg" textAlign="center">
-                    {getValues('tank1_reading_before')}
+                    {getValues('tank1_reading_after')}
                   </Heading>
                 </VStack>
               </VStack>
