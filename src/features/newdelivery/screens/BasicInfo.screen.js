@@ -14,24 +14,27 @@ const schema = yup
   .object({
     ordernumber: yup.string().required('Field is required'),
     sitename: yup.string().required('Field is required'),
-    accnumber: yup.string().required('Field is required'),
   })
   .required();
 
-export const BasicInfo = () => {
+export const BasicInfo = ({ navigation }) => {
   const { sites } = useContext(DeliveriesContext);
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
   } = useForm({
+    mode: 'onChange',
     defaultValues: { ...delivery },
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => UPDATE_FORM({ ...delivery, ...data });
+  const onSubmit = (data) => {
+    UPDATE_FORM({ ...delivery, ...data });
+    navigation.navigate('Tank1Screen');
+  };
 
   useEffect(() => {
     console.log(delivery);
@@ -52,7 +55,7 @@ export const BasicInfo = () => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <Input autoCapitalize="characters" onBlur={onBlur} placeholder="O123456" onChangeText={(val) => onChange(val)} value={value} />
+                      <Input size="md" autoCapitalize="characters" onBlur={onBlur} placeholder="O123456" onChangeText={(val) => onChange(val)} value={value} />
                     )}
                     name="ordernumber"
                     defaultValue={delivery.ordernumber}
@@ -66,11 +69,12 @@ export const BasicInfo = () => {
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Select
+                        size="md"
                         placeholder="Select Site"
                         selectedValue={value}
                         onValueChange={(itemValue) => {
                           onChange(itemValue);
-                          setValue('accnumber', sites.filter((site) => site.SiteName === value)[0].AccountNumber);
+                          setValue('accnumber', sites.filter((site) => site.SiteName === itemValue)[0].AccountNumber);
                         }}
                         selectedItemBg="teal.400"
                         dropdownOpenIcon={<Icon name="arrow-drop-up" type="MaterialIcons" size={6} />}
@@ -92,7 +96,15 @@ export const BasicInfo = () => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <Input autoCapitalize="characters" onBlur={onBlur} placeholder="A123456" onChangeText={(val) => onChange(val)} value={value} />
+                      <Input
+                        size="md"
+                        isDisabled
+                        autoCapitalize="characters"
+                        onBlur={onBlur}
+                        placeholder="A123456"
+                        onChangeText={(val) => onChange(val)}
+                        value={value}
+                      />
                     )}
                     name="accnumber"
                     defaultValue={delivery.accnumber}
@@ -100,14 +112,8 @@ export const BasicInfo = () => {
                   <FormControl.ErrorMessage>{errors.accnumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                <Button
-                  /*  isDisabled={!formProps.isValid || Object.keys(formProps.values).length === 0} */
-                  size="lg"
-                  onPress={handleSubmit(onSubmit)}
-                  mt="5"
-                  colorScheme="primary"
-                >
-                  Save & Continue
+                <Button isDisabled={!isValid} size="lg" onPress={handleSubmit(onSubmit)} mt="5" colorScheme="primary">
+                  Continue
                 </Button>
               </VStack>
             </Box>
@@ -118,6 +124,6 @@ export const BasicInfo = () => {
   );
 };
 
-/* BasicInfo.propTypes = {
+BasicInfo.propTypes = {
   navigation: PropTypes.element.isRequired,
-}; */
+};
