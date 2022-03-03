@@ -88,7 +88,7 @@ export const BasicInfo = ({ navigation }) => {
                     name="sitename"
                     defaultValue={delivery.sitename}
                   />
-                  <FormControl.ErrorMessage>{errors.language?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
                 <FormControl isRequired isInvalid={'accnumber' in errors}>
