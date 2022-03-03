@@ -11,6 +11,7 @@ import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.
 const deliverySchema = yup.object({
   OrderNumber: yup.string().required(),
   SiteName: yup.string().required(),
+  /* AccountNumber: yup.string().required(), */
 });
 
 export const BasicInfo = () => {
@@ -20,6 +21,8 @@ export const BasicInfo = () => {
   useEffect(() => {
     console.log(delivery);
   }, [delivery]);
+
+  let AccNumber = null;
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -89,21 +92,35 @@ export const BasicInfo = () => {
                           endIcon: <CheckIcon size="5" />,
                         }}
                         mt={1}
-                        onValueChange={
-                          /*  const accNumber = sites.filter((site) => site.SiteName === value)[0].AccountNumber; */
-                          formProps.handleChange('SiteName')
-                        }
+                        onValueChange={(value) => {
+                          AccNumber = sites.filter((site) => site.SiteName === value)[0].AccountNumber;
+                          formProps.handleChange('SiteName');
+                        }}
                         size="xl"
                       >
                         {sites.map((site) => (
-                          <Select.Item label={site.SiteName} value={site.SiteName} />
+                          <Select.Item key={site.Id} label={site.SiteName} value={site.SiteName} />
                         ))}
                       </Select>
                       <FormControl.ErrorMessage>{formProps.touched.SiteName && formProps.errors.SiteName}</FormControl.ErrorMessage>
                     </FormControl>
+                    <FormControl isRequired isInvalid={'AccountNumber' in formProps.errors}>
+                      <FormControl.Label
+                        _text={{
+                          bold: true,
+                        }}
+                        pl={2}
+                      >
+                        Account Number
+                      </FormControl.Label>
+                      <Input variant="underlined" value={AccNumber} size="xl" isDisabled="true" />
+                      <FormControl.ErrorMessage>{formProps.touched.AccountNumber && formProps.errors.AccountNumber}</FormControl.ErrorMessage>
+                    </FormControl>
                     <Button
+                      isDisabled={!formProps.isValid || Object.keys(formProps.values).length === 0}
                       size="lg"
                       onPress={() => {
+                        console.log(formProps);
                         formProps.handleSubmit();
                         /*  navigation.navigate('Tank1Screen'); */
                       }}
