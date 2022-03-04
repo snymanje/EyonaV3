@@ -32,7 +32,8 @@ export const BasicInfo = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
-    UPDATE_FORM({ ...delivery, ...data });
+    console.log(errors, isValid);
+    UPDATE_FORM(data);
     navigation.navigate('Tank1Screen');
   };
 

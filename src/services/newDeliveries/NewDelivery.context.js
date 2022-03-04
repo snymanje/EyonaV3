@@ -7,7 +7,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
   const [delivery, setDelivery] = useState({});
 
   const UPDATE_FORM = (data) => {
-    setDelivery({ ...delivery, ...data });
+    setDelivery((curr) => ({ ...curr, ...data }));
   };
 
   return <NewDeliveryContext.Provider value={{ delivery, UPDATE_FORM }}>{children}</NewDeliveryContext.Provider>;

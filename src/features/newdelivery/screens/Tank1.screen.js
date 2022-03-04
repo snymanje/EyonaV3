@@ -11,8 +11,8 @@ const schema = yup
   .object({
     tank1product: yup.string().required('Field is required'),
     tank1size: yup.string().required('Field is required'),
-    tank1_reading_before: yup.number().required('Field is required'),
-    tank1_reading_after: yup.number().required('Field is required'),
+    tank1_reading_before: yup.string().required('Field is required'),
+    tank1_reading_after: yup.string().required('Field is required'),
   })
   .required();
 
@@ -27,10 +27,12 @@ export const Tank1Screen = ({ navigation }) => {
   } = useForm({
     defaultValues: { ...delivery },
     resolver: yupResolver(schema),
+    mode: 'all',
   });
 
   const onSubmit = (data) => {
-    UPDATE_FORM({ ...delivery, ...data });
+    console.log(errors, isValid);
+    UPDATE_FORM(data);
     navigation.navigate('Tank2Screen');
   };
 
@@ -74,7 +76,7 @@ export const Tank1Screen = ({ navigation }) => {
                     name="tank1product"
                     defaultValue={delivery.tank1product}
                   />
-                  <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors.tank1product?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
                 <FormControl isRequired isInvalid={'tank1size' in errors}>
@@ -102,7 +104,7 @@ export const Tank1Screen = ({ navigation }) => {
                     name="tank1size"
                     defaultValue={delivery.tank1size}
                   />
-                  <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors.tank1size?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
                 <FormControl isRequired isInvalid={'tank1_reading_before' in errors}>
