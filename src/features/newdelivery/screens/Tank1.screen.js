@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, VStack, FormControl, Input, Heading, Text, KeyboardAvoidingView, ScrollView, Select, CheckIcon } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
@@ -212,6 +212,7 @@ export const Tank1Screen = ({ navigation }) => {
   );
 };
 
-Tank1Screen.propTypes = {
+/* Tank1Screen.propTypes = {
   navigation: PropTypes.element.isRequired,
 };
+ */

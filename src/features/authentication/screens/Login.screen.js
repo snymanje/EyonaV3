@@ -51,6 +51,6 @@ export const LoginScreen = ({ navigation }) => {
   );
 };
 
-LoginScreen.propTypes = {
-  navigation: PropTypes.element.isRequired,
-};
+/* LoginScreen.propTypes = {
+  navigation: PropTypes.object.isRequired
+}; */

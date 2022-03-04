@@ -212,6 +212,6 @@ export const Tank2Screen = ({ navigation }) => {
   );
 };
 
-Tank2Screen.propTypes = {
+/* Tank2Screen.propTypes = {
   navigation: PropTypes.element.isRequired,
-};
+}; */

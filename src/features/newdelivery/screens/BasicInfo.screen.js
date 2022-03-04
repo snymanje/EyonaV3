@@ -77,9 +77,10 @@ export const BasicInfo = ({ navigation }) => {
                           onChange(itemValue);
                           setValue('accnumber', sites.filter((site) => site.SiteName === itemValue)[0].AccountNumber);
                         }}
-                        selectedItemBg="teal.400"
-                        dropdownOpenIcon={<Icon name="arrow-drop-up" type="MaterialIcons" size={6} />}
-                        dropdownCloseIcon={<Icon name="arrow-drop-down" type="MaterialIcons" size={6} />}
+                        _selectedItem={{
+                          bg: 'gray.300',
+                          endIcon: <CheckIcon size="5" />,
+                        }}
                       >
                         {sites.map((site) => (
                           <Select.Item key={site.Id} label={site.SiteName} value={site.SiteName} />
@@ -125,6 +126,6 @@ export const BasicInfo = ({ navigation }) => {
   );
 };
 
-BasicInfo.propTypes = {
+/* BasicInfo.propTypes = {
   navigation: PropTypes.element.isRequired,
-};
+}; */
