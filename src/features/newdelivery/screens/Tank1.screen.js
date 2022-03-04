@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { Platform } from 'react-native';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
 const schema = yup
@@ -23,6 +24,7 @@ export const Tank1Screen = ({ navigation }) => {
     control,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: { ...delivery },
@@ -31,7 +33,6 @@ export const Tank1Screen = ({ navigation }) => {
   });
 
   const onSubmit = (data) => {
-    console.log(errors, isValid);
     UPDATE_FORM(data);
     navigation.navigate('Tank2Screen');
   };
@@ -118,7 +119,11 @@ export const Tank1Screen = ({ navigation }) => {
                         autoCapitalize="characters"
                         onBlur={onBlur}
                         placeholder="123456"
-                        onChangeText={(val) => onChange(val)}
+                        onChangeText={(val) => {
+                          onChange(val);
+                          const readAfter = +getValues('tank1_reading_after') - +val;
+                          setValue('tank1_total_delivered', readAfter.toString());
+                        }}
                         value={value}
                       />
                     )}
@@ -139,7 +144,11 @@ export const Tank1Screen = ({ navigation }) => {
                         autoCapitalize="characters"
                         onBlur={onBlur}
                         placeholder="123456"
-                        onChangeText={(val) => onChange(val)}
+                        onChangeText={(val) => {
+                          onChange(val);
+                          const readBefore = +val - +getValues('tank1_reading_before');
+                          setValue('tank1_total_delivered', readBefore.toString());
+                        }}
                         value={value}
                       />
                     )}
@@ -158,13 +167,27 @@ export const Tank1Screen = ({ navigation }) => {
                 >
                   Add ATG Slip
                 </Button>
-                <VStack width="100%" px={5} space={2}>
-                  <Heading size="md" textAlign="center">
-                    Total Delivered
-                  </Heading>
-                  <Heading size="lg" textAlign="center">
-                    {getValues('tank1_reading_after')}
-                  </Heading>
+                <VStack width="100%" px={5}>
+                  <FormControl>
+                    <FormControl.Label alignSelf="center" _text={{ fontSize: 'xl' }} my={0}>
+                      Total Delivered
+                    </FormControl.Label>
+                    <Controller
+                      control={control}
+                      render={({ field: { value } }) => (
+                        <Input
+                          size="md"
+                          value={value}
+                          isDisabled
+                          _disabled={{ bg: 'white', borderStyle: 'dashed', borderColor: 'white', fontSize: '35', fontWeight: 'bold' }}
+                          alignSelf="center"
+                          py={0}
+                        />
+                      )}
+                      name="tank1_total_delivered"
+                      defaultValue={delivery.tank1_total_delivered}
+                    />
+                  </FormControl>
                 </VStack>
               </VStack>
               <VStack width="100%" px={5} mb={2}>
