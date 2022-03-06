@@ -126,6 +126,8 @@ export const BasicInfo = ({ navigation }) => {
   );
 };
 
-/* BasicInfo.propTypes = {
-  navigation: PropTypes.element.isRequired,
-}; */
+BasicInfo.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

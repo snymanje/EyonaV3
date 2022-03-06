@@ -212,6 +212,9 @@ export const Tank2Screen = ({ navigation }) => {
   );
 };
 
-/* Tank2Screen.propTypes = {
-  navigation: PropTypes.element.isRequired,
-}; */
+Tank2Screen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
+  }).isRequired,
+};
