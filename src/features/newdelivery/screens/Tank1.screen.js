@@ -1,16 +1,23 @@
 import React from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { TankCore } from '../components/Tank.component';
 
+const formFields = {
+  Product: 'tank1_product',
+  Size: 'tank1_size',
+  ReadingBefore: 'tank1_readingBefore',
+  ReadingAfter: 'tank1_readingAfter',
+  TotalDelivered: 'tank1_totalDelivered',
+};
+
 const schema = yup
   .object({
-    tank1product: yup.string().required('Field is required'),
-    tank1size: yup.string().required('Field is required'),
-    tank1_reading_before: yup.string().required('Field is required'),
-    tank1_reading_after: yup.string().required('Field is required'),
+    [formFields.Product]: yup.string().required('Field is required'),
+    [formFields.Size]: yup.string().required('Field is required'),
+    [formFields.ReadingBefore]: yup.string().required('Field is required'),
+    [formFields.ReadingAfter]: yup.string().required('Field is required'),
   })
   .required();
 
-export const Tank1Screen = ({ navigation }) => <TankCore navigation={navigation} schema={schema} />;
+export const Tank1Screen = ({ navigation }) => <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 1 Information" />;

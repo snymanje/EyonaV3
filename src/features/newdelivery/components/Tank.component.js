@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, VStack, FormControl, Input, Heading, KeyboardAvoidingView, ScrollView, Select, CheckIcon } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Platform } from 'react-native';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const TankCore = ({ navigation, schema }) => {
+export const TankCore = ({ navigation, schema, formFields, title }) => {
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
@@ -27,21 +27,17 @@ export const TankCore = ({ navigation, schema }) => {
     navigation.navigate('Tank2Screen');
   };
 
-  useEffect(() => {
-    console.log(delivery);
-  }, [delivery]);
-
   return (
     <Box pt={4} flex={1} bg="white">
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
         <Box flex={1}>
           <Heading size="xl" textAlign="center">
-            Tank 1 Information
+            {title}
           </Heading>
           <ScrollView flex={1} _contentContainerStyle={{ px: '20px' }}>
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={6}>
-                <FormControl isRequired isInvalid={'tank1product' in errors}>
+                <FormControl isRequired isInvalid={formFields.Product in errors}>
                   <FormControl.Label>Product:</FormControl.Label>
                   <Controller
                     control={control}
@@ -64,13 +60,13 @@ export const TankCore = ({ navigation, schema }) => {
                         <Select.Item label="N/A" value="N/A" />
                       </Select>
                     )}
-                    name="tank1product"
-                    defaultValue={delivery.tank1product}
+                    name={formFields.Product}
+                    defaultValue={delivery[formFields.product]}
                   />
-                  <FormControl.ErrorMessage>{errors.tank1product?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors[formFields.Product]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                <FormControl isRequired isInvalid={'tank1size' in errors}>
+                <FormControl isRequired isInvalid={formFields.Size in errors}>
                   <FormControl.Label>Tank Size:</FormControl.Label>
                   <Controller
                     control={control}
@@ -92,13 +88,13 @@ export const TankCore = ({ navigation, schema }) => {
                         <Select.Item label="N/A" value="N/A" />
                       </Select>
                     )}
-                    name="tank1size"
-                    defaultValue={delivery.tank1size}
+                    name={formFields.Size}
+                    defaultValue={delivery[formFields.Size]}
                   />
-                  <FormControl.ErrorMessage>{errors.tank1size?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors[formFields.Size]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                <FormControl isRequired isInvalid={'tank1_reading_before' in errors}>
+                <FormControl isRequired isInvalid={formFields.ReadingBefore in errors}>
                   <FormControl.Label>Reading Before</FormControl.Label>
                   <Controller
                     control={control}
@@ -111,19 +107,19 @@ export const TankCore = ({ navigation, schema }) => {
                         placeholder="123456"
                         onChangeText={(val) => {
                           onChange(val);
-                          const readAfter = +getValues('tank1_reading_after') - +val;
-                          setValue('tank1_total_delivered', readAfter.toString());
+                          const readAfter = +getValues(formFields.ReadingAfter) - +val;
+                          setValue(formFields.TotalDelivered, readAfter.toString());
                         }}
                         value={value}
                       />
                     )}
-                    name="tank1_reading_before"
-                    defaultValue={delivery.tank1_reading_before}
+                    name={formFields.ReadingBefore}
+                    defaultValue={delivery[formFields.ReadingBefore]}
                   />
-                  <FormControl.ErrorMessage>{errors.tank1_reading_before?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors[formFields.ReadingBefore]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                <FormControl isRequired isInvalid={'tank1_reading_after' in errors}>
+                <FormControl isRequired isInvalid={formFields.ReadingAfter in errors}>
                   <FormControl.Label>Reading After</FormControl.Label>
                   <Controller
                     control={control}
@@ -136,16 +132,16 @@ export const TankCore = ({ navigation, schema }) => {
                         placeholder="123456"
                         onChangeText={(val) => {
                           onChange(val);
-                          const readBefore = +val - +getValues('tank1_reading_before');
-                          setValue('tank1_total_delivered', readBefore.toString());
+                          const readBefore = +val - +getValues(formFields.ReadingBefore);
+                          setValue(formFields.TotalDelivered, readBefore.toString());
                         }}
                         value={value}
                       />
                     )}
-                    name="tank1_reading_after"
-                    defaultValue={delivery.tank1_reading_after}
+                    name={formFields.ReadingAfter}
+                    defaultValue={delivery[formFields.ReadingAfter]}
                   />
-                  <FormControl.ErrorMessage>{errors.tank1_reading_after?.message}</FormControl.ErrorMessage>
+                  <FormControl.ErrorMessage>{errors[formFields.ReadingAfter]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
                 <Button
@@ -174,8 +170,8 @@ export const TankCore = ({ navigation, schema }) => {
                           py={0}
                         />
                       )}
-                      name="tank1_total_delivered"
-                      defaultValue={delivery.tank1_total_delivered}
+                      name={formFields.TotalDelivered}
+                      defaultValue={delivery[formFields.TotalDelivered]}
                     />
                   </FormControl>
                 </VStack>

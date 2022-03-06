@@ -17,7 +17,7 @@ const schema = yup
   })
   .required();
 
-export const Tank1Backup = ({ navigation }) => {
+export const Tank1Screen = ({ navigation }) => {
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
@@ -212,7 +212,7 @@ export const Tank1Backup = ({ navigation }) => {
   );
 };
 
-Tank1Backup.propTypes = {
+Tank1Screen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
