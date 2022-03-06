@@ -20,4 +20,6 @@ const schema = yup
   })
   .required();
 
-export const Tank2Screen = ({ navigation }) => <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 2 Information" />;
+export const Tank2Screen = ({ navigation }) => (
+  <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 2 Information" nextScreen="SummaryScreen" />
+);

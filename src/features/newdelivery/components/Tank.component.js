@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Platform } from 'react-native';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const TankCore = ({ navigation, schema, formFields, title }) => {
+export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
@@ -24,7 +24,7 @@ export const TankCore = ({ navigation, schema, formFields, title }) => {
 
   const onSubmit = (data) => {
     UPDATE_FORM(data);
-    navigation.navigate('Tank2Screen');
+    navigation.navigate(nextScreen);
   };
 
   return (
@@ -147,7 +147,7 @@ export const TankCore = ({ navigation, schema, formFields, title }) => {
                 <Button
                   size="sm"
                   onPress={() => {
-                    navigation.navigate('Tank2Screen');
+                    navigation.navigate(nextScreen);
                   }}
                   colorScheme="success"
                 >
