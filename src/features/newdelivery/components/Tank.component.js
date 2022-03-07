@@ -1,6 +1,17 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, VStack, FormControl, Input, Heading, KeyboardAvoidingView, ScrollView, Select, CheckIcon } from 'native-base';
+import {
+  Box,
+  Button,
+  VStack,
+  FormControl,
+  Input,
+  Heading,
+  KeyboardAvoidingView,
+  ScrollView,
+  Select,
+  CheckIcon,
+} from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -29,7 +40,11 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
 
   return (
     <Box pt={4} flex={1} bg="white">
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+        style={{ flex: 1 }}
+      >
         <Box flex={1}>
           <Heading size="xl" textAlign="center">
             {title}
@@ -147,7 +162,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 <Button
                   size="sm"
                   onPress={() => {
-                    navigation.navigate(nextScreen);
+                    navigation.navigate('CaptureAGTScreen');
                   }}
                   colorScheme="success"
                 >
@@ -165,7 +180,13 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                           size="md"
                           value={value}
                           isDisabled
-                          _disabled={{ bg: 'white', borderStyle: 'dashed', borderColor: 'white', fontSize: '35', fontWeight: 'bold' }}
+                          _disabled={{
+                            bg: 'white',
+                            borderStyle: 'dashed',
+                            borderColor: 'white',
+                            fontSize: '35',
+                            fontWeight: 'bold',
+                          }}
                           alignSelf="center"
                           py={0}
                         />
