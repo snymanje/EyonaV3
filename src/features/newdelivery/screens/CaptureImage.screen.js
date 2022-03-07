@@ -1,51 +1,34 @@
-/* eslint-disable react-native/no-color-literals */
-/* eslint-disable react-native/no-inline-styles */
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
-export const CaptureAGTScreen = () => (
-  <View style={styles.container}>
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <TouchableOpacity
-        style={{
-          width: 130,
-          borderRadius: 4,
-          backgroundColor: '#14274e',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 40,
-        }}
-      >
-        <Text
-          style={{
-            color: '#fff',
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}
-        >
-          Take picture
-        </Text>
+export const CaptureAGTScreen = () => {
+  const [image, setImage] = useState(null);
+
+  const openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      console.log('Permission to access camera roll is required!');
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [18, 9],
+      quality: 1,
+    });
+    setImage(pickerResult);
+    console.log(image);
+  };
+
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Image source={{ uri: 'https://i.imgur.com/TkIrScD.png' }} />
+
+      <TouchableOpacity onPress={openImagePickerAsync}>
+        <Text>Pick a photo</Text>
       </TouchableOpacity>
     </View>
-
-    <StatusBar style="auto" />
-  </View>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
+  );
+};
