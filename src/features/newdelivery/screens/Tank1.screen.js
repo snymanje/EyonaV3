@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import * as yup from 'yup';
 
 import { TankCore } from '../components/Tank.component';
@@ -21,5 +22,11 @@ const schema = yup
   .required();
 
 export const Tank1Screen = ({ navigation }) => (
-  <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 1 Information" nextScreen="Tank2Screen" />
+  <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 1 Information" nextScreen="SummaryScreen" />
 );
+
+Tank1Screen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};

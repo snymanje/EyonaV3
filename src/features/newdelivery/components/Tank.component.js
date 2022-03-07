@@ -61,7 +61,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                       </Select>
                     )}
                     name={formFields.Product}
-                    defaultValue={delivery[formFields.product]}
+                    defaultValue={delivery[formFields.Product]}
                   />
                   <FormControl.ErrorMessage>{errors[formFields.Product]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -202,5 +202,14 @@ TankCore.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
+  }).isRequired,
+  nextScreen: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  formFields: PropTypes.shape({
+    Product: PropTypes.string,
+    Size: PropTypes.string,
+    ReadingBefore: PropTypes.string,
+    ReadingAfter: PropTypes.string,
+    TotalDelivered: PropTypes.string,
   }).isRequired,
 };

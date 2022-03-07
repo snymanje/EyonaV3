@@ -1,12 +1,24 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, VStack, FormControl, Input, Text, Heading, Select, ScrollView, KeyboardAvoidingView, CheckIcon } from 'native-base';
+import {
+  Box,
+  Button,
+  VStack,
+  FormControl,
+  Input,
+  Heading,
+  Select,
+  ScrollView,
+  KeyboardAvoidingView,
+  CheckIcon,
+  Text,
+} from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import * as Location from 'expo-location';
 
 import { Platform } from 'react-native';
-import Icon from 'react-native-ionicons';
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
@@ -31,19 +43,33 @@ export const BasicInfo = ({ navigation }) => {
     defaultValues: { ...delivery },
     resolver: yupResolver(schema),
   });
+
   const onSubmit = (data) => {
-    console.log(errors, isValid);
     UPDATE_FORM(data);
     navigation.navigate('Tank1Screen');
   };
 
   useEffect(() => {
-    console.log(delivery);
-  }, [delivery]);
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const locationData = await Location.getCurrentPositionAsync({});
+      setValue('longitude', locationData.coords.longitude.toString());
+      setValue('latitude', locationData.coords.latitude.toString());
+    })();
+  }, [setValue]);
 
   return (
     <Box pt={4} flex={1} bg="white">
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : null} keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+        style={{ flex: 1 }}
+      >
         <Box flex={1} pt={5}>
           <Heading size="xl" textAlign="center">
             Site Information
@@ -56,7 +82,14 @@ export const BasicInfo = ({ navigation }) => {
                   <Controller
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                      <Input size="md" autoCapitalize="characters" onBlur={onBlur} placeholder="O123456" onChangeText={(val) => onChange(val)} value={value} />
+                      <Input
+                        size="md"
+                        autoCapitalize="characters"
+                        onBlur={onBlur}
+                        placeholder="O123456"
+                        onChangeText={(val) => onChange(val)}
+                        value={value}
+                      />
                     )}
                     name="ordernumber"
                     defaultValue={delivery.ordernumber}
@@ -112,6 +145,30 @@ export const BasicInfo = ({ navigation }) => {
                     defaultValue={delivery.accnumber}
                   />
                   <FormControl.ErrorMessage>{errors.accnumber?.message}</FormControl.ErrorMessage>
+                </FormControl>
+
+                <FormControl>
+                  <FormControl.Label>Longitude</FormControl.Label>
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
+                    )}
+                    name="longitude"
+                    defaultValue={delivery.longitude}
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormControl.Label>Latitude</FormControl.Label>
+                  <Controller
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
+                    )}
+                    name="latitude"
+                    defaultValue={delivery.latitude}
+                  />
                 </FormControl>
 
                 <Button isDisabled={!isValid} size="lg" onPress={handleSubmit(onSubmit)} mt="5" colorScheme="primary">
