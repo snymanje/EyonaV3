@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -11,14 +11,18 @@ import {
   ScrollView,
   Select,
   CheckIcon,
+  Image,
 } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
 import { Platform } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
 export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
+  const [image, setImage] = useState(null);
+
   const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
@@ -37,6 +41,24 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     UPDATE_FORM(data);
     navigation.navigate(nextScreen);
   };
+
+  const openImagePickerAsync = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      console.log('Permission to access camera roll is required!');
+      return;
+    }
+
+    const pickerResult = await ImagePicker.launchCameraAsync({
+      quality: 0.5,
+    });
+    setImage(pickerResult);
+  };
+
+  useEffect(() => {
+    console.log(image);
+  }, [image]);
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -159,15 +181,16 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                   <FormControl.ErrorMessage>{errors[formFields.ReadingAfter]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                <Button
-                  size="sm"
-                  onPress={() => {
-                    navigation.navigate('CaptureAGTScreen');
-                  }}
-                  colorScheme="success"
-                >
-                  Add ATG Slip
-                </Button>
+                {image ? (
+                  <Button size="sm" onPress={openImagePickerAsync} colorScheme="success">
+                    Retake ATG Slip
+                  </Button>
+                ) : (
+                  <Button size="sm" onPress={openImagePickerAsync} colorScheme="success">
+                    Add ATG Slip
+                  </Button>
+                )}
+
                 <VStack width="100%" px={5}>
                   <FormControl>
                     <FormControl.Label alignSelf="center" _text={{ fontSize: 'xl' }} my={0}>
@@ -192,7 +215,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                         />
                       )}
                       name={formFields.TotalDelivered}
-                      defaultValue={delivery[formFields.TotalDelivered]}
+                      defaultValue={delivery[formFields.TotalDelivered] ? delivery[formFields.TotalDelivered] : '0'}
                     />
                   </FormControl>
                 </VStack>
@@ -227,6 +250,13 @@ TankCore.propTypes = {
   nextScreen: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   formFields: PropTypes.shape({
+    Product: PropTypes.string,
+    Size: PropTypes.string,
+    ReadingBefore: PropTypes.string,
+    ReadingAfter: PropTypes.string,
+    TotalDelivered: PropTypes.string,
+  }).isRequired,
+  schema: PropTypes.shape({
     Product: PropTypes.string,
     Size: PropTypes.string,
     ReadingBefore: PropTypes.string,
