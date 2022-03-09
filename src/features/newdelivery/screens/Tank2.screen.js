@@ -5,11 +5,11 @@ import * as yup from 'yup';
 import { TankCore } from '../components/Tank.component';
 
 const formFields = {
-  Product: 'tank2_product',
-  Size: 'tank2_size',
-  ReadingBefore: 'tank2_readingBefore',
-  ReadingAfter: 'tank2_readingAfter',
-  TotalDelivered: 'tank2_totalDelivered',
+  Product: 'product',
+  Size: 'size',
+  ReadingBefore: 'readingbefore',
+  ReadingAfter: 'readingafter',
+  TotalDelivered: 'totaldelivered',
 };
 
 const schema = yup
@@ -22,7 +22,13 @@ const schema = yup
   .required();
 
 export const Tank2Screen = ({ navigation }) => (
-  <TankCore schema={schema} formFields={formFields} navigation={navigation} title="Tank 2 Inforamtion" nextScreen="SummaryScreen" />
+  <TankCore
+    schema={schema}
+    formFields={formFields}
+    navigation={navigation}
+    title="Tank 2 Inforamtion"
+    nextScreen="SummaryScreen"
+  />
 );
 
 Tank2Screen.propTypes = {

@@ -11,7 +11,6 @@ import {
   ScrollView,
   Select,
   CheckIcon,
-  Image,
 } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,7 +22,7 @@ import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.
 export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
   const [image, setImage] = useState(null);
 
-  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
+  const { delivery, UPDATE_FORM, onSubmitTankInfo } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -32,14 +31,15 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     setValue,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: { ...delivery },
+    defaultValues: {},
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
-  const onSubmit = (data) => {
-    UPDATE_FORM(data);
-    navigation.navigate(nextScreen);
+  const onSubmit = async (data) => {
+    /* UPDATE_FORM({ ...delivery, tanks: { ...data } }); */
+    /*  navigation.navigate(nextScreen); */
+    await onSubmitTankInfo(data);
   };
 
   const openImagePickerAsync = async () => {
@@ -55,10 +55,6 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     });
     setImage(pickerResult);
   };
-
-  useEffect(() => {
-    console.log(image);
-  }, [image]);
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -77,6 +73,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 <FormControl isRequired isInvalid={formFields.Product in errors}>
                   <FormControl.Label>Product:</FormControl.Label>
                   <Controller
+                    key={formFields.Product}
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Select
@@ -106,6 +103,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 <FormControl isRequired isInvalid={formFields.Size in errors}>
                   <FormControl.Label>Tank Size:</FormControl.Label>
                   <Controller
+                    key={formFields.Size}
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Select
@@ -134,6 +132,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 <FormControl isRequired isInvalid={formFields.ReadingBefore in errors}>
                   <FormControl.Label>Reading Before</FormControl.Label>
                   <Controller
+                    key={formFields.ReadingBefore}
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
@@ -159,6 +158,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 <FormControl isRequired isInvalid={formFields.ReadingAfter in errors}>
                   <FormControl.Label>Reading After</FormControl.Label>
                   <Controller
+                    key={formFields.ReadingAfter}
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input

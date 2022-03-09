@@ -31,7 +31,7 @@ const schema = yup
 
 export const BasicInfo = ({ navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
+  const { delivery, UPDATE_FORM, onSubmitBasicInfo } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -44,8 +44,9 @@ export const BasicInfo = ({ navigation }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    UPDATE_FORM(data);
+  const onSubmit = async (data) => {
+    /* UPDATE_FORM({ ...data, tanks: {} }); */
+    await onSubmitBasicInfo(data);
     navigation.navigate('Tank1Screen');
   };
 
@@ -80,6 +81,7 @@ export const BasicInfo = ({ navigation }) => {
                 <FormControl isRequired isInvalid={'ordernumber' in errors}>
                   <FormControl.Label>Order Number</FormControl.Label>
                   <Controller
+                    key="ordernumber"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
@@ -100,6 +102,7 @@ export const BasicInfo = ({ navigation }) => {
                 <FormControl isRequired isInvalid={'sitename' in errors}>
                   <FormControl.Label>Select Site:</FormControl.Label>
                   <Controller
+                    key="sitename"
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Select
@@ -129,6 +132,7 @@ export const BasicInfo = ({ navigation }) => {
                 <FormControl isRequired isInvalid={'accnumber' in errors}>
                   <FormControl.Label>Account Number</FormControl.Label>
                   <Controller
+                    key="accnumber"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
                       <Input
@@ -150,6 +154,7 @@ export const BasicInfo = ({ navigation }) => {
                 <FormControl>
                   <FormControl.Label>Longitude</FormControl.Label>
                   <Controller
+                    key="longitude"
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
@@ -162,6 +167,7 @@ export const BasicInfo = ({ navigation }) => {
                 <FormControl>
                   <FormControl.Label>Latitude</FormControl.Label>
                   <Controller
+                    key="latitude"
                     control={control}
                     render={({ field: { onChange, value } }) => (
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
