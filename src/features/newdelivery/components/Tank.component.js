@@ -45,11 +45,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
   };
 
   const UploadImage = async (imageResult) => {
-    const { data, error } = await supabase.storage
-      .from('agtslips')
-      .upload(`public/ABC123.png`, decode(imageResult.base64), {
-        contentType: 'image/png',
-      });
+    const { data, error } = await supabase.storage.from('agtslips').upload(`ABC123.png`, decode(imageResult.base64), {
+      contentType: 'image/png',
+    });
     console.log(data, error);
   };
 
