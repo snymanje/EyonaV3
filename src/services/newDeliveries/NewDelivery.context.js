@@ -18,7 +18,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
     try {
       setFechError(null);
       setIsLoading(true);
-      const { error } = await supabase.from('Deliveries').insert([{ ...payload }]);
+      const { error } = await supabase.from('Deliveries').upsert({ ...payload }, { onConflict: 'ordernumber' });
       if (error) {
         setFechError(error);
         setIsLoading(false);

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -16,6 +16,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { decode } from 'base64-arraybuffer';
+
+import { supabase } from '../../../lib/supabase';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
@@ -41,6 +44,15 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     navigation.navigate(nextScreen);
   };
 
+  const UploadImage = async (imageResult) => {
+    const { data, error } = await supabase.storage
+      .from('agtslips')
+      .upload(`public/ABC123.png`, decode(imageResult.base64), {
+        contentType: 'image/png',
+      });
+    console.log(data, error);
+  };
+
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -50,10 +62,16 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     }
 
     const pickerResult = await ImagePicker.launchCameraAsync({
+      base64: true,
       quality: 0.5,
     });
     setImage(pickerResult);
+    await UploadImage(pickerResult);
   };
+
+  /*   useEffect(() => {
+    console.log(image);
+  }, [image]); */
 
   return (
     <Box pt={4} flex={1} bg="white">

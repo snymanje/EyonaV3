@@ -10,6 +10,7 @@ const formFields = {
   ReadingBefore: 'Tank2ReadingBefore',
   ReadingAfter: 'Tank2ReadingAfter',
   TotalDelivered: 'Tank2TotalDelivered',
+  AGTSlip: 'Tank1AgtSlip',
 };
 
 const schema = yup
