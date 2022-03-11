@@ -27,6 +27,7 @@ const ScreenOptions = ({ route }) => {
       },
       null,
     ],
+    unmountOnBlur: true,
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -22,7 +22,7 @@ import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.
 export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
   const [image, setImage] = useState(null);
 
-  const { delivery, UPDATE_FORM, onSubmitTankInfo } = useContext(NewDeliveryContext);
+  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -31,15 +31,14 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     setValue,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: {},
+    defaultValues: delivery,
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
-  const onSubmit = async (data) => {
-    /* UPDATE_FORM({ ...delivery, tanks: { ...data } }); */
-    /*  navigation.navigate(nextScreen); */
-    await onSubmitTankInfo(data);
+  const onSubmit = async (payload) => {
+    UPDATE_FORM({ ...delivery, ...payload });
+    navigation.navigate(nextScreen);
   };
 
   const openImagePickerAsync = async () => {

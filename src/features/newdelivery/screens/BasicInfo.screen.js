@@ -31,7 +31,7 @@ const schema = yup
 
 export const BasicInfo = ({ navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { delivery, UPDATE_FORM, onSubmitBasicInfo } = useContext(NewDeliveryContext);
+  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -40,13 +40,12 @@ export const BasicInfo = ({ navigation }) => {
     setValue,
   } = useForm({
     mode: 'onChange',
-    defaultValues: { ...delivery },
+    defaultValues: delivery,
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
-    /* UPDATE_FORM({ ...data, tanks: {} }); */
-    await onSubmitBasicInfo(data);
+  const onSubmit = async (payload) => {
+    UPDATE_FORM({ ...payload });
     navigation.navigate('Tank1Screen');
   };
 

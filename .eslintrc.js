@@ -33,5 +33,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/function-component-definition': 'off',
     'react/jsx-no-constructed-context-values': 'off',
+    'consistent-return': 'off',
   },
 };
