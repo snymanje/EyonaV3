@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   CheckIcon,
   Text,
+  Hidden,
 } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -33,7 +34,7 @@ export const BasicInfo = ({ route, navigation }) => {
   const { sites } = useContext(DeliveriesContext);
   const { UPDATE_FORM } = useContext(NewDeliveryContext);
 
-  const { delivery } = route.params;
+  const { delivery, formMode } = route.params;
 
   const {
     control,
@@ -48,22 +49,25 @@ export const BasicInfo = ({ route, navigation }) => {
 
   const onSubmit = async (payload) => {
     UPDATE_FORM({ ...payload });
-    navigation.navigate('Tank1Screen');
+    navigation.navigate('SummaryScreen');
   };
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        return;
-      }
+    console.log('FormMode', formMode);
+    if (formMode === 'New') {
+      (async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Permission to access location was denied');
+          return;
+        }
 
-      const locationData = await Location.getCurrentPositionAsync({});
-      setValue('longitude', locationData.coords.longitude.toString());
-      setValue('latitude', locationData.coords.latitude.toString());
-    })();
-  }, [setValue]);
+        const locationData = await Location.getCurrentPositionAsync({});
+        setValue('longitude', locationData.coords.longitude.toString());
+        setValue('latitude', locationData.coords.latitude.toString());
+      })();
+    }
+  }, [formMode, setValue]);
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -79,6 +83,24 @@ export const BasicInfo = ({ route, navigation }) => {
           <ScrollView flex={1} _contentContainerStyle={{ px: '20px' }}>
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={6}>
+                {formMode === 'Edit' && (
+                  /*  <Hidden> */
+                  <FormControl>
+                    <FormControl.Label>Order Id</FormControl.Label>
+                    <Controller
+                      key="Id"
+                      control={control}
+                      render={({ field: { onChange, value } }) => (
+                        <Input size="md" onChangeText={(val) => onChange(val)} value={value} />
+                      )}
+                      name="Id"
+                      defaultValue={formMode === 'Edit' ? delivery?.Id : ''}
+                    />
+                    <FormControl.ErrorMessage>{errors.ordernumber?.message}</FormControl.ErrorMessage>
+                  </FormControl>
+                  /* </Hidden> */
+                )}
+
                 <FormControl isRequired isInvalid={'ordernumber' in errors}>
                   <FormControl.Label>Order Number</FormControl.Label>
                   <Controller
@@ -95,7 +117,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       />
                     )}
                     name="ordernumber"
-                    defaultValue={delivery.ordernumber}
+                    defaultValue={formMode === 'Edit' ? delivery?.ordernumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.ordernumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -125,7 +147,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       </Select>
                     )}
                     name="sitename"
-                    defaultValue={delivery.sitename}
+                    defaultValue={formMode === 'Edit' ? delivery?.sitename : ''}
                   />
                   <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -147,7 +169,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       />
                     )}
                     name="accnumber"
-                    defaultValue={delivery.accnumber}
+                    defaultValue={formMode === 'Edit' ? delivery?.accnumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.accnumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -161,7 +183,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="longitude"
-                    defaultValue={delivery.longitude}
+                    defaultValue={formMode === 'Edit' ? delivery?.longitude : ''}
                   />
                 </FormControl>
 
@@ -174,7 +196,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="latitude"
-                    defaultValue={delivery.latitude}
+                    defaultValue={formMode === 'Edit' ? delivery?.latitude : ''}
                   />
                 </FormControl>
 

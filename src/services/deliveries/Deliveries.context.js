@@ -11,49 +11,55 @@ export const DeliveriesContextProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [fechError, setFechError] = useState(null);
 
+  const getMyDeliveries = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase.from('Deliveries').select();
+      if (error) {
+        console.log(error);
+        setFechError(error);
+        setIsLoading(false);
+        return null;
+      }
+      console.log(data);
+      setDeliveries(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setFechError(error);
+      setIsLoading(false);
+    }
+  };
+
+  const getSites = async () => {
+    try {
+      const { data, error } = await supabase.from('Sites').select();
+      if (error) {
+        console.log(error);
+        setFechError(error);
+        setIsLoading(false);
+        return null;
+      }
+      console.log(data);
+      setSites(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setFechError(error);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    setIsLoading(true);
-    const getMyDeliveries = async () => {
-      try {
-        const { data, error } = await supabase.from('Deliveries').select();
-        if (error) {
-          console.log(error);
-          setFechError(error);
-          setIsLoading(false);
-          return null;
-        }
-        console.log(data);
-        setDeliveries(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setFechError(error);
-        setIsLoading(false);
-      }
-    };
-    const getSites = async () => {
-      try {
-        const { data, error } = await supabase.from('Sites').select();
-        if (error) {
-          console.log(error);
-          setFechError(error);
-          setIsLoading(false);
-          return null;
-        }
-        console.log(data);
-        setSites(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setFechError(error);
-        setIsLoading(false);
-      }
-    };
     getSites();
     getMyDeliveries();
   }, []);
 
-  return <DeliveriesContext.Provider value={{ deliveries, sites, isLoading, fechError }}>{children}</DeliveriesContext.Provider>;
+  return (
+    <DeliveriesContext.Provider value={{ deliveries, getMyDeliveries, sites, isLoading, fechError }}>
+      {children}
+    </DeliveriesContext.Provider>
+  );
 };
 
 DeliveriesContextProvider.propTypes = {
