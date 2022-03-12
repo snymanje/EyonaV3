@@ -1,11 +1,25 @@
 import React, { useContext } from 'react';
-import { Text, AspectRatio, Box, Center, Stack, Heading, HStack, Icon, Image, Input, VStack, FlatList, Spinner } from 'native-base';
+import {
+  Text,
+  AspectRatio,
+  Box,
+  Center,
+  Stack,
+  Heading,
+  HStack,
+  Icon,
+  Image,
+  Input,
+  VStack,
+  FlatList,
+  Spinner,
+} from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TouchableOpacity } from 'react-native';
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 
-export const MyDeliveriesScreen = () => {
+export const MyDeliveriesScreen = ({ navigation }) => {
   const { deliveries, isLoading } = useContext(DeliveriesContext);
 
   return (
@@ -33,13 +47,12 @@ export const MyDeliveriesScreen = () => {
             data={deliveries}
             renderItem={({ item }) => (
               <TouchableOpacity
-              /* onPress={() =>
-                navigation.navigate("DeliveryDetail", {
-                  delivery: item,
-                })
-              } */
+                onPress={() =>
+                  navigation.navigate('DeliveryDetail', {
+                    delivery: item,
+                  })
+                }
               >
-                {/* <MyDeliveriesCard delivery={item} navigation={navigation} /> */}
                 <Box alignItems="center" mb={5}>
                   <Box
                     rounded="lg"
@@ -106,7 +119,8 @@ export const MyDeliveriesScreen = () => {
                         </Text>
                       </Stack>
                       <Text fontWeight="400">
-                        Bengaluru (also called Bangalore) is the center of India's high-tech industry. The city is also known for its parks and nightlife.
+                        Bengaluru (also called Bangalore) is the center of India's high-tech industry. The city is also
+                        known for its parks and nightlife.
                       </Text>
                       <HStack alignItems="center" space={4} justifyContent="space-between">
                         <HStack alignItems="center">

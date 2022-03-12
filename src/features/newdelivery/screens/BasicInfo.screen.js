@@ -29,9 +29,11 @@ const schema = yup
   })
   .required();
 
-export const BasicInfo = ({ navigation }) => {
+export const BasicInfo = ({ route, navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
+  const { UPDATE_FORM } = useContext(NewDeliveryContext);
+
+  const { delivery } = route.params;
 
   const {
     control,
@@ -39,8 +41,8 @@ export const BasicInfo = ({ navigation }) => {
     formState: { errors, isValid },
     setValue,
   } = useForm({
-    mode: 'onChange',
-    defaultValues: delivery,
+    mode: 'all',
+    defaultValues: {},
     resolver: yupResolver(schema),
   });
 

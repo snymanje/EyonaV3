@@ -10,7 +10,7 @@ export const SummaryScreen = ({ navigation }) => {
   const [isCollapsedBasicInfo, setIsCollapsedBasicInfo] = useState(false);
   const [isCollapsedTank1, setIsCollapsedTank1] = useState(true);
 
-  const { delivery, onSubmit, fechError: error } = useContext(NewDeliveryContext);
+  const { delivery, tanks, onSubmit, fechError: error } = useContext(NewDeliveryContext);
 
   useEffect(() => {
     console.log(delivery);
@@ -47,7 +47,7 @@ export const SummaryScreen = ({ navigation }) => {
             </Text>
           </Box>
           <Collapsible collapsed={isCollapsedTank1}>
-            <Box px="4">{JSON.stringify(delivery, null, 2)}</Box>
+            <Box px="4">{JSON.stringify(tanks, null, 2)}</Box>
             <Box px="4" pb="4">
               {error && error.message}
             </Box>

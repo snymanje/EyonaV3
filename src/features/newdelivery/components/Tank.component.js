@@ -25,7 +25,7 @@ import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.
 export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
   const [image, setImage] = useState(null);
 
-  const { delivery, UPDATE_FORM } = useContext(NewDeliveryContext);
+  const { delivery, UPDATE_FORM_TANKS } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -34,13 +34,13 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     setValue,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: delivery,
+    defaultValues: {},
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
   const onSubmit = async (payload) => {
-    UPDATE_FORM({ ...delivery, ...payload });
+    UPDATE_FORM_TANKS(payload);
     navigation.navigate(nextScreen);
   };
 
@@ -66,10 +66,6 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     setImage(pickerResult);
     await UploadImage(pickerResult);
   };
-
-  /*   useEffect(() => {
-    console.log(image);
-  }, [image]); */
 
   return (
     <Box pt={4} flex={1} bg="white">
