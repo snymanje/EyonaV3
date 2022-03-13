@@ -22,10 +22,12 @@ import { supabase } from '../../../lib/supabase';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
+export const TankCore = ({ navigation, schema, formFields, title, nextScreen, delivery }) => {
   const [image, setImage] = useState(null);
 
-  const { delivery, UPDATE_FORM_TANKS } = useContext(NewDeliveryContext);
+  const { UPDATE_FORM } = useContext(NewDeliveryContext);
+
+  console.log(delivery);
 
   const {
     control,
@@ -40,7 +42,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
   });
 
   const onSubmit = async (payload) => {
-    UPDATE_FORM_TANKS(payload);
+    UPDATE_FORM(payload);
     navigation.navigate(nextScreen);
   };
 
@@ -106,7 +108,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                       </Select>
                     )}
                     name={formFields.Product}
-                    defaultValue={delivery[formFields.Product]}
+                    defaultValue={delivery[formFields?.Product] ? delivery[formFields?.Product].toString() : ''}
                   />
                   <FormControl.ErrorMessage>{errors[formFields.Product]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -135,7 +137,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                       </Select>
                     )}
                     name={formFields.Size}
-                    defaultValue={delivery[formFields.Size]}
+                    defaultValue={delivery[formFields?.Size] ? delivery[formFields?.Size].toString() : ''}
                   />
                   <FormControl.ErrorMessage>{errors[formFields.Size]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -161,7 +163,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                       />
                     )}
                     name={formFields.ReadingBefore}
-                    defaultValue={delivery[formFields.ReadingBefore]}
+                    defaultValue={
+                      delivery[formFields?.ReadingBefore] ? delivery[formFields?.ReadingBefore].toString() : ''
+                    }
                   />
                   <FormControl.ErrorMessage>{errors[formFields.ReadingBefore]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -187,7 +191,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                       />
                     )}
                     name={formFields.ReadingAfter}
-                    defaultValue={delivery[formFields.ReadingAfter]}
+                    defaultValue={
+                      delivery[formFields?.ReadingAfter] ? delivery[formFields?.ReadingAfter].toString() : ''
+                    }
                   />
                   <FormControl.ErrorMessage>{errors[formFields.ReadingAfter]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -226,7 +232,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                         />
                       )}
                       name={formFields.TotalDelivered}
-                      defaultValue={delivery[formFields.TotalDelivered] ? delivery[formFields.TotalDelivered] : '0'}
+                      defaultValue={
+                        delivery[formFields?.TotalDelivered] ? delivery[formFields?.TotalDelivered].toString() : '0'
+                      }
                     />
                   </FormControl>
                 </VStack>

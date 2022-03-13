@@ -9,18 +9,13 @@ export const NewDeliveryContext = createContext();
 
 export const NewDeliveryContextProvider = ({ children }) => {
   const [delivery, setDelivery] = useState({});
-  const [tanks, setTanks] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [fechError, setFechError] = useState(null);
 
   const { getMyDeliveries } = useContext(DeliveriesContext);
 
   const UPDATE_FORM = (payload) => {
-    setDelivery(payload);
-  };
-
-  const UPDATE_FORM_TANKS = (payload) => {
-    setTanks(payload);
+    setDelivery((curr) => ({ ...curr, ...payload }));
   };
 
   const onSubmit = async (payload, navigation) => {
@@ -34,7 +29,6 @@ export const NewDeliveryContextProvider = ({ children }) => {
         setIsLoading(false);
         return null;
       }
-      setDelivery({});
       getMyDeliveries();
       navigation.reset({
         index: 0,
@@ -47,9 +41,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
   };
 
   return (
-    <NewDeliveryContext.Provider
-      value={{ delivery, tanks, UPDATE_FORM, UPDATE_FORM_TANKS, onSubmit, isLoading, fechError }}
-    >
+    <NewDeliveryContext.Provider value={{ delivery, UPDATE_FORM, onSubmit, isLoading, fechError }}>
       {children}
     </NewDeliveryContext.Provider>
   );

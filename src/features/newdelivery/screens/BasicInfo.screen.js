@@ -44,12 +44,13 @@ export const BasicInfo = ({ route, navigation }) => {
   } = useForm({
     mode: 'all',
     defaultValues: {},
+    shouldUnregister: false,
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (payload) => {
     UPDATE_FORM({ ...payload });
-    navigation.navigate('SummaryScreen');
+    navigation.navigate('Tank1Screen', { delivery });
   };
 
   useEffect(() => {
@@ -84,21 +85,19 @@ export const BasicInfo = ({ route, navigation }) => {
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={6}>
                 {formMode === 'Edit' && (
-                  /*  <Hidden> */
                   <FormControl>
-                    <FormControl.Label>Order Id</FormControl.Label>
                     <Controller
                       key="Id"
                       control={control}
                       render={({ field: { onChange, value } }) => (
-                        <Input size="md" onChangeText={(val) => onChange(val)} value={value} />
+                        <Hidden>
+                          <Input size="md" onChangeText={(val) => onChange(val)} value={value} />
+                        </Hidden>
                       )}
                       name="Id"
                       defaultValue={formMode === 'Edit' ? delivery?.Id : ''}
                     />
-                    <FormControl.ErrorMessage>{errors.ordernumber?.message}</FormControl.ErrorMessage>
                   </FormControl>
-                  /* </Hidden> */
                 )}
 
                 <FormControl isRequired isInvalid={'ordernumber' in errors}>

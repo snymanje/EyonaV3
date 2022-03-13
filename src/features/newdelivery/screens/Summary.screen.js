@@ -47,7 +47,7 @@ export const SummaryScreen = ({ navigation }) => {
             </Text>
           </Box>
           <Collapsible collapsed={isCollapsedTank1}>
-            <Box px="4">{JSON.stringify(tanks, null, 2)}</Box>
+            <Box px="4">{JSON.stringify(delivery, null, 2)}</Box>
             <Box px="4" pb="4">
               {error && error.message}
             </Box>
