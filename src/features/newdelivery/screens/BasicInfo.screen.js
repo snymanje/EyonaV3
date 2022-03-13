@@ -41,15 +41,18 @@ export const BasicInfo = ({ route, navigation }) => {
     control,
     handleSubmit,
     formState: { errors, isValid },
+    formState,
     setValue,
     reset,
   } = useForm({
+    mode: 'all',
     defaultValues: {},
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (payload) => {
     UPDATE_FORM({ ...payload });
+
     navigation.navigate('Tank1Screen', { delivery });
   };
 
@@ -59,7 +62,7 @@ export const BasicInfo = ({ route, navigation }) => {
     setMode(formMode);
     if (formMode === 'New') {
       (async () => {
-        reset({});
+        reset(delivery);
         setFormData(null);
         console.log(Date().toString());
         const { status } = await Location.requestForegroundPermissionsAsync();
