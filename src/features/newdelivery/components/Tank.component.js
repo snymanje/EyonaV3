@@ -43,7 +43,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
 
   const onSubmit = async (payload) => {
     UPDATE_FORM(payload);
-    navigation.navigate(nextScreen);
+    navigation.navigate(nextScreen, { delivery });
   };
 
   const UploadImage = async (imageResult) => {

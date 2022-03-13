@@ -30,7 +30,7 @@ export const Tank1Screen = ({ route, navigation }) => {
       formFields={formFields}
       navigation={navigation}
       title="Tank 1 Information"
-      nextScreen="SummaryScreen"
+      nextScreen="Tank2Screen"
       delivery={delivery}
     />
   );

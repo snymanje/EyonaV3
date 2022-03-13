@@ -22,15 +22,19 @@ const schema = yup
   })
   .required();
 
-export const Tank2Screen = ({ navigation }) => (
-  <TankCore
-    schema={schema}
-    formFields={formFields}
-    navigation={navigation}
-    title="Tank 2 Inforamtion"
-    nextScreen="SummaryScreen"
-  />
-);
+export const Tank2Screen = ({ route, navigation }) => {
+  const { delivery } = route.params;
+  return (
+    <TankCore
+      schema={schema}
+      formFields={formFields}
+      navigation={navigation}
+      title="Tank 2 Inforamtion"
+      nextScreen="SummaryScreen"
+      delivery={delivery}
+    />
+  );
+};
 
 Tank2Screen.propTypes = {
   navigation: PropTypes.shape({
