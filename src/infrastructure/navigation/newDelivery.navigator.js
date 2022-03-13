@@ -22,7 +22,7 @@ export const NewDeliveriesNavigator = () => (
         name="BasicInfoScreen"
         component={BasicInfo}
         options={{ title: 'Capture New Delivery' }}
-        initialParams={{ delivery: null, formMode: 'New' }}
+        initialParams={{ delivery: null, formMode: true }}
       />
       <NewDeliveryStack.Screen name="Tank1Screen" component={Tank1Screen} options={{ title: 'Capture New Delivery' }} />
       <NewDeliveryStack.Screen name="Tank2Screen" component={Tank2Screen} options={{ title: 'Capture New Delivery' }} />

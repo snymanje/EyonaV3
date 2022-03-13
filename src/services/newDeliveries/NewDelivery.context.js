@@ -32,7 +32,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
       getMyDeliveries();
       navigation.reset({
         index: 0,
-        routes: [{ name: 'MyDeliveries' }],
+        routes: [{ name: 'MyDeliveriesTab' }],
       });
     } catch (error) {
       setFechError(error);

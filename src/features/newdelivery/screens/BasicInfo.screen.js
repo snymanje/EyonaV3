@@ -55,6 +55,7 @@ export const BasicInfo = ({ route, navigation }) => {
 
   useEffect(() => {
     console.log('FormMode', formMode);
+    console.log(delivery);
     if (formMode === 'New') {
       (async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -68,7 +69,7 @@ export const BasicInfo = ({ route, navigation }) => {
         setValue('latitude', locationData.coords.latitude.toString());
       })();
     }
-  }, [formMode, setValue]);
+  }, [delivery, formMode, setValue]);
 
   return (
     <Box pt={4} flex={1} bg="white">

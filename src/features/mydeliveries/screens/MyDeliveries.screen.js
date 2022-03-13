@@ -24,7 +24,7 @@ export const MyDeliveriesScreen = ({ navigation }) => {
 
   return (
     <Box flex={1} safeArea px={2}>
-      <VStack w="100%" alignSelf="center" py={3}>
+      <VStack w="100%" alignSelf="center" pb={3}>
         <Input
           placeholder="Search"
           variant="filled"

@@ -12,7 +12,10 @@ export const DeliveryDetailsScreen = ({ route, navigation }) => {
       <Text>{JSON.stringify(delivery, null, 2)}</Text>
       <Button
         onPress={() =>
-          navigation.navigate('NewDelivery', { screen: 'BasicInfoScreen', params: { delivery, formMode: 'Edit' } })
+          navigation.navigate('NewDeliveryTab', {
+            screen: 'BasicInfoScreen',
+            params: { delivery, formMode: 'Edit' },
+          })
         }
       >
         Edit
