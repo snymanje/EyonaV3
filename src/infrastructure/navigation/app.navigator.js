@@ -33,7 +33,7 @@ const ScreenOptions = ({ route, navigation }) => {
         onPress={() =>
           navigation.navigate('NewDeliveryTab', {
             screen: 'BasicInfoScreen',
-            params: { delivery: null, formMode: 'New' },
+            params: { delivery: {}, formMode: 'New' },
           })
         }
       >

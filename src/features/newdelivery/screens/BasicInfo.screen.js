@@ -34,17 +34,17 @@ export const BasicInfo = ({ route, navigation }) => {
   const { sites } = useContext(DeliveriesContext);
   const { UPDATE_FORM } = useContext(NewDeliveryContext);
 
-  const { delivery, formMode } = route.params;
+  const [formData, setFormData] = useState(null);
+  const [mode, setMode] = useState(null);
 
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
+    reset,
   } = useForm({
-    mode: 'all',
     defaultValues: {},
-    shouldUnregister: false,
     resolver: yupResolver(schema),
   });
 
@@ -53,11 +53,15 @@ export const BasicInfo = ({ route, navigation }) => {
     navigation.navigate('Tank1Screen', { delivery });
   };
 
+  const { delivery, formMode } = route.params;
+
   useEffect(() => {
-    console.log('FormMode', formMode);
-    console.log(delivery);
+    setMode(formMode);
     if (formMode === 'New') {
       (async () => {
+        reset({});
+        setFormData(null);
+        console.log(Date().toString());
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
           console.log('Permission to access location was denied');
@@ -68,8 +72,10 @@ export const BasicInfo = ({ route, navigation }) => {
         setValue('longitude', locationData.coords.longitude.toString());
         setValue('latitude', locationData.coords.latitude.toString());
       })();
+    } else {
+      reset(delivery);
     }
-  }, [delivery, formMode, setValue]);
+  }, [delivery, formData, formMode, mode, reset, setValue]);
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -96,7 +102,7 @@ export const BasicInfo = ({ route, navigation }) => {
                         </Hidden>
                       )}
                       name="Id"
-                      defaultValue={formMode === 'Edit' ? delivery?.Id : ''}
+                      defaultValue={mode === 'Edit' ? formData?.Id : ''}
                     />
                   </FormControl>
                 )}
@@ -117,7 +123,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       />
                     )}
                     name="ordernumber"
-                    defaultValue={formMode === 'Edit' ? delivery?.ordernumber : ''}
+                    defaultValue={mode === 'Edit' ? formData?.ordernumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.ordernumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -147,7 +153,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       </Select>
                     )}
                     name="sitename"
-                    defaultValue={formMode === 'Edit' ? delivery?.sitename : ''}
+                    defaultValue={mode === 'Edit' ? formData?.sitename : ''}
                   />
                   <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -163,13 +169,12 @@ export const BasicInfo = ({ route, navigation }) => {
                         isDisabled
                         autoCapitalize="characters"
                         onBlur={onBlur}
-                        placeholder="A123456"
                         onChangeText={(val) => onChange(val)}
                         value={value}
                       />
                     )}
                     name="accnumber"
-                    defaultValue={formMode === 'Edit' ? delivery?.accnumber : ''}
+                    defaultValue={mode === 'Edit' ? formData?.accnumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.accnumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -183,7 +188,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="longitude"
-                    defaultValue={formMode === 'Edit' ? delivery?.longitude : ''}
+                    defaultValue={mode === 'Edit' ? formData?.longitude.toString() : ''}
                   />
                 </FormControl>
 
@@ -196,7 +201,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="latitude"
-                    defaultValue={formMode === 'Edit' ? delivery?.latitude : ''}
+                    defaultValue={mode === 'Edit' ? formData?.latitude.toString() : ''}
                   />
                 </FormControl>
 
