@@ -44,6 +44,7 @@ export const MyDeliveriesScreen = ({ navigation }) => {
       ) : (
         <VStack w="100%" space={5} alignSelf="center">
           <FlatList
+            initialNumToRender={3}
             data={deliveries}
             renderItem={({ item }) => (
               <TouchableOpacity

@@ -17,7 +17,11 @@ export const DeliveryDetailsScreen = ({ route, navigation }) => {
       <Button
         onPress={async () => {
           await setFormData(delivery);
-          navigation.navigate('NewDeliveryTab');
+          navigation.goBack();
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'NewDeliveryTab' }],
+          });
         }}
       >
         Edit
