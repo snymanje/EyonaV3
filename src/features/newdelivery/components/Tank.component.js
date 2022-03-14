@@ -51,8 +51,8 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, na
       contentType: 'image/png',
       upsert: true,
     });
-    console.log(data, error);
-    setValue(formFields.ImageUrl, data.Key);
+    const { publicURL } = await supabase.storage.from('agtslips').getPublicUrl(fileName);
+    setValue(formFields.ImageUrl, publicURL);
   };
 
   const openImagePickerAsync = async () => {
