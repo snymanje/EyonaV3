@@ -11,6 +11,7 @@ import {
   ScrollView,
   Select,
   CheckIcon,
+  Hidden,
 } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,10 +23,10 @@ import { supabase } from '../../../lib/supabase';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
+export const TankCore = ({ navigation, schema, formFields, title, nextScreen, name }) => {
   const [image, setImage] = useState(null);
 
-  const { UPDATE_FORM, deliveryState } = useContext(NewDeliveryContext);
+  const { deliveryState, onSubmit } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -39,16 +40,19 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
     mode: 'all',
   });
 
-  const onSubmit = async (payload) => {
-    UPDATE_FORM(payload);
+  const onSaveContinue = async (payload) => {
+    console.log(payload);
+    onSubmit({ ...deliveryState, ...payload });
     navigation.navigate(nextScreen);
   };
 
-  const UploadImage = async (imageResult) => {
-    const { data, error } = await supabase.storage.from('agtslips').upload(`ABC123.png`, decode(imageResult.base64), {
+  const UploadImage = async (imageResult, fileName) => {
+    const { data, error } = await supabase.storage.from('agtslips').upload(fileName, decode(imageResult.base64), {
       contentType: 'image/png',
+      upsert: true,
     });
     console.log(data, error);
+    setValue(formFields.ImageUrl, data.Key);
   };
 
   const openImagePickerAsync = async () => {
@@ -64,7 +68,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
       quality: 0.5,
     });
     setImage(pickerResult);
-    await UploadImage(pickerResult);
+
+    const fileName = `${deliveryState.Id}_${name}_${deliveryState.ordernumber}.png`;
+    await UploadImage(pickerResult, fileName);
   };
 
   return (
@@ -81,6 +87,30 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
           <ScrollView flex={1} _contentContainerStyle={{ px: '20px' }}>
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={6}>
+                <FormControl>
+                  <Controller
+                    key={formFields.ImageUrl}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Hidden>
+                        <Input size="md" onChangeText={(val) => onChange(val)} value={value} />
+                      </Hidden>
+                    )}
+                    name={formFields.ImageUrl}
+                  />
+                </FormControl>
+                <FormControl>
+                  <Controller
+                    key={formFields.Name}
+                    control={control}
+                    render={({ field: { value } }) => (
+                      <Hidden>
+                        <Input size="md" onChangeText={(val) => onChange(val)} value={name} />
+                      </Hidden>
+                    )}
+                    name={formFields.Name}
+                  />
+                </FormControl>
                 <FormControl isRequired isInvalid={formFields.Product in errors}>
                   <FormControl.Label>Product:</FormControl.Label>
                   <Controller
@@ -206,7 +236,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                   <FormControl.ErrorMessage>{errors[formFields.ReadingAfter]?.message}</FormControl.ErrorMessage>
                 </FormControl>
 
-                {image ? (
+                {image || deliveryState[formFields.ImageUrl] ? (
                   <Button size="sm" onPress={openImagePickerAsync} colorScheme="success">
                     Retake ATG Slip
                   </Button>
@@ -250,8 +280,14 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) 
                 </VStack>
               </VStack>
               <VStack width="100%" px={5} mb={2}>
-                <Button isDisabled={!isValid} size="lg" onPress={handleSubmit(onSubmit)} mt="5" colorScheme="primary">
-                  Continue
+                <Button
+                  isDisabled={!isValid}
+                  size="lg"
+                  onPress={handleSubmit(onSaveContinue)}
+                  mt="5"
+                  colorScheme="primary"
+                >
+                  Save & Continue
                 </Button>
                 <Button
                   onPress={() => {

@@ -14,25 +14,21 @@ export const NewDeliveryContextProvider = ({ children }) => {
 
   const { getMyDeliveries } = useContext(DeliveriesContext);
 
-  const UPDATE_FORM = (payload) => {
-    setDeliveryState((curr) => ({ ...curr, ...payload }));
-  };
-
   const setFormData = (payload) => {
     setDeliveryState(payload);
   };
 
   const onSubmit = async (payload, navigation) => {
     try {
-      console.log('payload', payload);
       setFechError(null);
       setIsLoading(true);
-      const { error } = await supabase.from('Deliveries').upsert({ ...payload }, { onConflict: 'Id' });
+      const { data, error } = await supabase.from('Deliveries').upsert({ ...payload }, { onConflict: 'Id' });
       if (error) {
         setFechError(error);
         setIsLoading(false);
         return null;
       }
+      setDeliveryState((curr) => ({ ...curr, ...data[0] }));
       getMyDeliveries();
       navigation.reset({
         index: 0,
@@ -45,7 +41,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
   };
 
   return (
-    <NewDeliveryContext.Provider value={{ deliveryState, UPDATE_FORM, setFormData, onSubmit, isLoading, fechError }}>
+    <NewDeliveryContext.Provider value={{ deliveryState, setFormData, onSubmit, isLoading, fechError }}>
       {children}
     </NewDeliveryContext.Provider>
   );

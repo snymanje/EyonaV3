@@ -14,7 +14,7 @@ export const DeliveriesContextProvider = ({ children }) => {
   const getMyDeliveries = async () => {
     try {
       setIsLoading(true);
-      const { data, error } = await supabase.from('Deliveries').select();
+      const { data, error } = await supabase.from('Deliveries').select().order('created_at', { ascending: false });
       if (error) {
         console.log(error);
         setFechError(error);

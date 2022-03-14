@@ -10,7 +10,7 @@ export const SummaryScreen = ({ navigation }) => {
   const [isCollapsedBasicInfo, setIsCollapsedBasicInfo] = useState(false);
   const [isCollapsedTank1, setIsCollapsedTank1] = useState(true);
 
-  const { deliveryState, onSubmit, fechError: error } = useContext(NewDeliveryContext);
+  const { deliveryState } = useContext(NewDeliveryContext);
 
   useEffect(() => {
     console.log(deliveryState);
@@ -34,9 +34,6 @@ export const SummaryScreen = ({ navigation }) => {
           </View>
           <Collapsible collapsed={isCollapsedBasicInfo}>
             <Box px="4">{JSON.stringify(deliveryState, null, 2)}</Box>
-            <Box px="4" pb="4">
-              {error && error.message}
-            </Box>
           </Collapsible>
         </View>
 
@@ -48,15 +45,8 @@ export const SummaryScreen = ({ navigation }) => {
           </Box>
           <Collapsible collapsed={isCollapsedTank1}>
             <Box px="4">{JSON.stringify(deliveryState, null, 2)}</Box>
-            <Box px="4" pb="4">
-              {error && error.message}
-            </Box>
           </Collapsible>
         </VStack>
-        <Button size="lg" onPress={() => onSubmit(deliveryState, navigation)} mt="5" colorScheme="primary">
-          Submit
-        </Button>
-        <Text>{error && error.message}</Text>
       </Box>
     </ScrollView>
   );

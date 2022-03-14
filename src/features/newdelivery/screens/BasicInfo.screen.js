@@ -30,12 +30,11 @@ const schema = yup
   })
   .required();
 
-export const BasicInfo = ({ route, navigation }) => {
+export const BasicInfo = ({ navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { UPDATE_FORM, deliveryState } = useContext(NewDeliveryContext);
+  const { UPDATE_FORM, deliveryState, onSubmit } = useContext(NewDeliveryContext);
 
   const [formData, setFormData] = useState(null);
-  /* const [mode, setMode] = useState(null); */
 
   const {
     control,
@@ -65,8 +64,8 @@ export const BasicInfo = ({ route, navigation }) => {
     })();
   }, [deliveryState, reset, setValue]);
 
-  const onSubmit = async (payload) => {
-    UPDATE_FORM({ ...payload });
+  const onSaveContinue = async (payload) => {
+    onSubmit({ ...deliveryState, ...payload });
     navigation.navigate('Tank1Screen');
   };
 
@@ -198,8 +197,14 @@ export const BasicInfo = ({ route, navigation }) => {
                   />
                 </FormControl>
 
-                <Button isDisabled={!isValid} size="lg" onPress={handleSubmit(onSubmit)} mt="5" colorScheme="primary">
-                  Continue
+                <Button
+                  isDisabled={!isValid}
+                  size="lg"
+                  onPress={handleSubmit(onSaveContinue)}
+                  mt="5"
+                  colorScheme="primary"
+                >
+                  Save & Continue
                 </Button>
               </VStack>
             </Box>

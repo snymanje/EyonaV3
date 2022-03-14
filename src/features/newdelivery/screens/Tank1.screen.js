@@ -11,6 +11,8 @@ const formFields = {
   ReadingAfter: 'Tank1ReadingAfter',
   TotalDelivered: 'Tank1TotalDelivered',
   AGTSlip: 'Tank1AgtSlip',
+  Name: 'Tank1Name',
+  ImageUrl: 'Tank1ImageUrl',
 };
 
 const schema = yup
@@ -29,6 +31,7 @@ export const Tank1Screen = ({ navigation }) => (
     navigation={navigation}
     title="Tank 1 Information"
     nextScreen="Tank2Screen"
+    name="Tank1"
   />
 );
 
