@@ -22,12 +22,10 @@ import { supabase } from '../../../lib/supabase';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
-export const TankCore = ({ navigation, schema, formFields, title, nextScreen, delivery }) => {
+export const TankCore = ({ navigation, schema, formFields, title, nextScreen }) => {
   const [image, setImage] = useState(null);
 
-  const { UPDATE_FORM } = useContext(NewDeliveryContext);
-
-  console.log(delivery);
+  const { UPDATE_FORM, deliveryState } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -43,7 +41,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
 
   const onSubmit = async (payload) => {
     UPDATE_FORM(payload);
-    navigation.navigate(nextScreen, { delivery });
+    navigation.navigate(nextScreen);
   };
 
   const UploadImage = async (imageResult) => {
@@ -109,7 +107,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
                     )}
                     name={formFields.Product}
                     defaultValue={
-                      delivery && delivery[formFields?.Product] ? delivery[formFields?.Product].toString() : ''
+                      deliveryState && deliveryState[formFields?.Product]
+                        ? deliveryState[formFields?.Product].toString()
+                        : ''
                     }
                   />
                   <FormControl.ErrorMessage>{errors[formFields.Product]?.message}</FormControl.ErrorMessage>
@@ -139,7 +139,9 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
                       </Select>
                     )}
                     name={formFields.Size}
-                    defaultValue={delivery && delivery[formFields?.Size] ? delivery[formFields?.Size].toString() : ''}
+                    defaultValue={
+                      deliveryState && deliveryState[formFields?.Size] ? deliveryState[formFields?.Size].toString() : ''
+                    }
                   />
                   <FormControl.ErrorMessage>{errors[formFields.Size]?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -166,8 +168,8 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
                     )}
                     name={formFields.ReadingBefore}
                     defaultValue={
-                      delivery && delivery[formFields?.ReadingBefore]
-                        ? delivery[formFields?.ReadingBefore].toString()
+                      deliveryState && deliveryState[formFields?.ReadingBefore]
+                        ? deliveryState[formFields?.ReadingBefore].toString()
                         : ''
                     }
                   />
@@ -196,8 +198,8 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
                     )}
                     name={formFields.ReadingAfter}
                     defaultValue={
-                      delivery && delivery[formFields?.ReadingAfter]
-                        ? delivery[formFields?.ReadingAfter].toString()
+                      deliveryState && deliveryState[formFields?.ReadingAfter]
+                        ? deliveryState[formFields?.ReadingAfter].toString()
                         : ''
                     }
                   />
@@ -239,8 +241,8 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, de
                       )}
                       name={formFields.TotalDelivered}
                       defaultValue={
-                        delivery && delivery[formFields?.TotalDelivered]
-                          ? delivery[formFields?.TotalDelivered].toString()
+                        deliveryState && deliveryState[formFields?.TotalDelivered]
+                          ? deliveryState[formFields?.TotalDelivered].toString()
                           : '0'
                       }
                     />

@@ -8,14 +8,18 @@ import { DeliveriesContext } from '../deliveries/Deliveries.context';
 export const NewDeliveryContext = createContext();
 
 export const NewDeliveryContextProvider = ({ children }) => {
-  const [delivery, setDelivery] = useState({});
+  const [deliveryState, setDeliveryState] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [fechError, setFechError] = useState(null);
 
   const { getMyDeliveries } = useContext(DeliveriesContext);
 
   const UPDATE_FORM = (payload) => {
-    setDelivery((curr) => ({ ...curr, ...payload }));
+    setDeliveryState((curr) => ({ ...curr, ...payload }));
+  };
+
+  const setFormData = (payload) => {
+    setDeliveryState(payload);
   };
 
   const onSubmit = async (payload, navigation) => {
@@ -41,7 +45,7 @@ export const NewDeliveryContextProvider = ({ children }) => {
   };
 
   return (
-    <NewDeliveryContext.Provider value={{ delivery, UPDATE_FORM, onSubmit, isLoading, fechError }}>
+    <NewDeliveryContext.Provider value={{ deliveryState, UPDATE_FORM, setFormData, onSubmit, isLoading, fechError }}>
       {children}
     </NewDeliveryContext.Provider>
   );

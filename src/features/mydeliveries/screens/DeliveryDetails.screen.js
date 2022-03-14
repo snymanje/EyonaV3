@@ -1,9 +1,13 @@
+import React, { useContext } from 'react';
 import { Button } from 'native-base';
-import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
+import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
 export const DeliveryDetailsScreen = ({ route, navigation }) => {
   const { delivery } = route.params;
+
+  const { setFormData } = useContext(NewDeliveryContext);
 
   return (
     <View style={styles.screen}>
@@ -11,12 +15,10 @@ export const DeliveryDetailsScreen = ({ route, navigation }) => {
       <Text>{delivery.ordernumber}</Text>
       <Text>{JSON.stringify(delivery, null, 2)}</Text>
       <Button
-        onPress={() =>
-          navigation.navigate('NewDeliveryTab', {
-            screen: 'BasicInfoScreen',
-            params: { delivery, formMode: 'Edit' },
-          })
-        }
+        onPress={async () => {
+          await setFormData(delivery);
+          navigation.navigate('NewDeliveryTab');
+        }}
       >
         Edit
       </Button>

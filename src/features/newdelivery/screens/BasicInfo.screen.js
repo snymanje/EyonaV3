@@ -32,16 +32,15 @@ const schema = yup
 
 export const BasicInfo = ({ route, navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { UPDATE_FORM } = useContext(NewDeliveryContext);
+  const { UPDATE_FORM, deliveryState } = useContext(NewDeliveryContext);
 
   const [formData, setFormData] = useState(null);
-  const [mode, setMode] = useState(null);
+  /* const [mode, setMode] = useState(null); */
 
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
-    formState,
     setValue,
     reset,
   } = useForm({
@@ -50,35 +49,26 @@ export const BasicInfo = ({ route, navigation }) => {
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    (async () => {
+      reset(deliveryState);
+      setFormData(deliveryState);
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      const locationData = await Location.getCurrentPositionAsync({});
+      setValue('longitude', locationData.coords.longitude.toString());
+      setValue('latitude', locationData.coords.latitude.toString());
+    })();
+  }, [deliveryState, reset, setValue]);
+
   const onSubmit = async (payload) => {
     UPDATE_FORM({ ...payload });
-
-    navigation.navigate('Tank1Screen', { delivery });
+    navigation.navigate('Tank1Screen');
   };
-
-  const { delivery, formMode } = route.params;
-
-  useEffect(() => {
-    setMode(formMode);
-    if (formMode === 'New') {
-      (async () => {
-        reset(delivery);
-        setFormData(null);
-        console.log(Date().toString());
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Permission to access location was denied');
-          return;
-        }
-
-        const locationData = await Location.getCurrentPositionAsync({});
-        setValue('longitude', locationData.coords.longitude.toString());
-        setValue('latitude', locationData.coords.latitude.toString());
-      })();
-    } else {
-      reset(delivery);
-    }
-  }, [delivery, formData, formMode, mode, reset, setValue]);
 
   return (
     <Box pt={4} flex={1} bg="white">
@@ -94,7 +84,7 @@ export const BasicInfo = ({ route, navigation }) => {
           <ScrollView flex={1} _contentContainerStyle={{ px: '20px' }}>
             <Box mt={8} flex={1} justifyContent="space-between">
               <VStack width="100%" px={5} space={6}>
-                {formMode === 'Edit' && (
+                {deliveryState.Id && (
                   <FormControl>
                     <Controller
                       key="Id"
@@ -105,7 +95,7 @@ export const BasicInfo = ({ route, navigation }) => {
                         </Hidden>
                       )}
                       name="Id"
-                      defaultValue={mode === 'Edit' ? formData?.Id : ''}
+                      defaultValue={deliveryState.Id ? formData?.Id : ''}
                     />
                   </FormControl>
                 )}
@@ -126,7 +116,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       />
                     )}
                     name="ordernumber"
-                    defaultValue={mode === 'Edit' ? formData?.ordernumber : ''}
+                    defaultValue={deliveryState.Id ? formData?.ordernumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.ordernumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -156,7 +146,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       </Select>
                     )}
                     name="sitename"
-                    defaultValue={mode === 'Edit' ? formData?.sitename : ''}
+                    defaultValue={deliveryState.Id ? formData?.sitename : ''}
                   />
                   <FormControl.ErrorMessage>{errors.sitename?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -177,7 +167,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       />
                     )}
                     name="accnumber"
-                    defaultValue={mode === 'Edit' ? formData?.accnumber : ''}
+                    defaultValue={deliveryState.Id ? formData?.accnumber : ''}
                   />
                   <FormControl.ErrorMessage>{errors.accnumber?.message}</FormControl.ErrorMessage>
                 </FormControl>
@@ -191,7 +181,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="longitude"
-                    defaultValue={mode === 'Edit' ? formData?.longitude.toString() : ''}
+                    defaultValue={deliveryState.Id ? formData?.longitude?.toString() : ''}
                   />
                 </FormControl>
 
@@ -204,7 +194,7 @@ export const BasicInfo = ({ route, navigation }) => {
                       <Input size="md" onChangeText={(val) => onChange(val)} value={value} isDisabled />
                     )}
                     name="latitude"
-                    defaultValue={mode === 'Edit' ? formData?.latitude.toString() : ''}
+                    defaultValue={deliveryState.Id ? formData?.latitude?.toString() : ''}
                   />
                 </FormControl>
 
