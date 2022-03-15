@@ -17,16 +17,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { decode } from 'base64-arraybuffer';
-
-import { supabase } from '../../../lib/supabase';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
 
 export const TankCore = ({ navigation, schema, formFields, title, nextScreen, name }) => {
   const [image, setImage] = useState(null);
 
-  const { deliveryState, onSubmit } = useContext(NewDeliveryContext);
+  const { deliveryState, onSubmit, UploadImage, isLoading } = useContext(NewDeliveryContext);
 
   const {
     control,
@@ -46,15 +43,6 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, na
     navigation.navigate(nextScreen);
   };
 
-  const UploadImage = async (imageResult, fileName) => {
-    const { data, error } = await supabase.storage.from('agtslips').upload(fileName, decode(imageResult.base64), {
-      contentType: 'image/png',
-      upsert: true,
-    });
-    const { publicURL } = await supabase.storage.from('agtslips').getPublicUrl(fileName);
-    setValue(formFields.ImageUrl, publicURL);
-  };
-
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
@@ -69,8 +57,10 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, na
     });
     setImage(pickerResult);
 
-    const fileName = `${deliveryState.Id}_${name}_${deliveryState.ordernumber}.png`;
-    await UploadImage(pickerResult, fileName);
+    const timeStamp = +new Date();
+    const fileName = `${deliveryState.Id}_${name}_${deliveryState.ordernumber}_${timeStamp}.png`;
+    const { publicURL } = await UploadImage(pickerResult, fileName, formFields.ImageUrl);
+    setValue(formFields.ImageUrl, publicURL);
   };
 
   return (
@@ -281,13 +271,13 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, na
               </VStack>
               <VStack width="100%" px={5} mb={2}>
                 <Button
-                  isDisabled={!isValid}
+                  isDisabled={!isValid || isLoading}
                   size="lg"
                   onPress={handleSubmit(onSaveContinue)}
                   mt="5"
                   colorScheme="primary"
                 >
-                  Save & Continue
+                  {isLoading ? 'Loading...' : 'Save & Continue'}
                 </Button>
                 <Button
                   onPress={() => {
@@ -314,12 +304,14 @@ TankCore.propTypes = {
   }).isRequired,
   nextScreen: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   formFields: PropTypes.shape({
     Product: PropTypes.string,
     Size: PropTypes.string,
     ReadingBefore: PropTypes.string,
     ReadingAfter: PropTypes.string,
     TotalDelivered: PropTypes.string,
+    ImageUrl: PropTypes.string,
   }).isRequired,
   schema: PropTypes.shape({
     Product: PropTypes.string,

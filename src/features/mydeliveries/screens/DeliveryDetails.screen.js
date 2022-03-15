@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Button, Image } from 'native-base';
+import { Button, Image, Row } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { NewDeliveryContext } from '../../../services/newDeliveries/NewDelivery.context';
@@ -14,8 +14,10 @@ export const DeliveryDetailsScreen = ({ route, navigation }) => {
       <Text>My Deliveries Details</Text>
       <Text>{delivery.ordernumber}</Text>
       <Text>{JSON.stringify(delivery, null, 2)}</Text>
-      <Image source={{ uri: delivery.Tank1ImageUrl }} alt="image" width={100} height={100} />
-      <Image source={{ uri: delivery.Tank2ImageUrl }} alt="image" width={100} height={100} />
+      <View style={{ flexDirection: 'row' }}>
+        <Image source={{ uri: delivery.Tank1ImageUrl }} alt="image" width={100} height={100} />
+        <Image source={{ uri: delivery.Tank2ImageUrl }} alt="image" width={100} height={100} />
+      </View>
       <Button
         onPress={async () => {
           await setFormData(delivery);

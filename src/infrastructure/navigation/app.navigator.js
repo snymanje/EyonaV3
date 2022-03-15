@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import { Button } from 'native-base';
+import { Button, IconButton } from 'native-base';
 import { DeliveriesNavigator } from './deliveries.navigator';
 import { NewDeliveriesNavigator } from './newDelivery.navigator';
 import { SettingsScreen } from '../../features/settings/screens/Settings.screen';
@@ -19,6 +19,24 @@ const TAB_ICON = {
 export const AppNavigator = () => {
   const { setFormData } = useContext(NewDeliveryContext);
 
+  const headerComponent = (navigation) => (
+    <IconButton
+      icon={<Ionicons name="add-circle-outline" size={30} />}
+      _pressed={{
+        bg: 'white',
+      }}
+      onPress={() => {
+        setFormData({});
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'NewDeliveryTab' }],
+        });
+      }}
+    >
+      New
+    </IconButton>
+  );
+
   const ScreenOptions = ({ route, navigation }) => {
     const iconName = TAB_ICON[route.name];
     return {
@@ -32,19 +50,7 @@ export const AppNavigator = () => {
         },
         null,
       ],
-      headerRight: () => (
-        <Button
-          onPress={() => {
-            setFormData({});
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'NewDeliveryTab' }],
-            });
-          }}
-        >
-          New
-        </Button>
-      ),
+      headerRight: () => headerComponent(navigation),
       /* unmountOnBlur: true, */
     };
   };

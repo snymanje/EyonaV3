@@ -52,7 +52,6 @@ export const DeliveriesContextProvider = ({ children }) => {
 
   useEffect(() => {
     getSites();
-    getMyDeliveries();
   }, []);
 
   return (

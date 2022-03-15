@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Text,
   AspectRatio,
@@ -20,17 +21,21 @@ import { TouchableOpacity } from 'react-native';
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
 
 export const MyDeliveriesScreen = ({ navigation }) => {
-  const { deliveries, isLoading } = useContext(DeliveriesContext);
+  const { deliveries, getMyDeliveries, isLoading } = useContext(DeliveriesContext);
+
+  useEffect(() => {
+    getMyDeliveries();
+  }, []);
 
   return (
-    <Box flex={1} safeArea px={2}>
-      <VStack w="100%" alignSelf="center" pb={3}>
+    <Box flex={1} px={2}>
+      <VStack w="100%" alignSelf="center" py={3}>
         <Input
           placeholder="Search"
           variant="filled"
           width="100%"
           borderRadius="10"
-          py="3"
+          pb="3"
           px="4"
           borderWidth="0"
           size="2xl"
@@ -147,4 +152,10 @@ export const MyDeliveriesScreen = ({ navigation }) => {
       )}
     </Box>
   );
+};
+
+MyDeliveriesScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
