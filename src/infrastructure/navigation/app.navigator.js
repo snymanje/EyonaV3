@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { IconButton } from 'native-base';
 import { DeliveriesNavigator } from './deliveries.navigator';
 import { NewDeliveriesNavigator } from './newDelivery.navigator';
+import { Map } from '../../features/map/screens/Map.screen';
 import { SettingsScreen } from '../../features/settings/screens/Settings.screen';
 
 import { NewDeliveryContext } from '../../services/newDeliveries/NewDelivery.context';
@@ -14,6 +15,7 @@ const Tab = createBottomTabNavigator();
 const TAB_ICON = {
   MyDeliveriesTab: 'md-list',
   SettingsTab: 'md-settings',
+  MapTab: 'map-outline',
 };
 
 export const AppNavigator = () => {
@@ -66,6 +68,7 @@ export const AppNavigator = () => {
           tabBarVisible: false, // if you don't want to see the tab bar
         }}
       />
+      <Tab.Screen name="MapTab" component={Map} options={{ title: 'Site Map' }} />
       <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{ title: 'Settings' }} />
     </Tab.Navigator>
   );
