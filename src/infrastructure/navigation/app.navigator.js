@@ -51,7 +51,6 @@ export const AppNavigator = () => {
         null,
       ],
       headerRight: () => headerComponent(navigation),
-      /* unmountOnBlur: true, */
     };
   };
 
