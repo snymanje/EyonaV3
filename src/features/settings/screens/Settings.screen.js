@@ -19,7 +19,6 @@ export const SettingsScreen = () => {
 
   return (
     <Screen>
-      <Text variant="body">Feature 3</Text>
       <Button onPress={() => onLogout()}>Logout</Button>
     </Screen>
   );

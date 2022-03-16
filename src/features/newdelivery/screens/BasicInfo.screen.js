@@ -32,7 +32,7 @@ const schema = yup
 
 export const BasicInfo = ({ navigation }) => {
   const { sites } = useContext(DeliveriesContext);
-  const { UPDATE_FORM, deliveryState, onSubmit } = useContext(NewDeliveryContext);
+  const { deliveryState, onSubmit } = useContext(NewDeliveryContext);
 
   const [formData, setFormData] = useState(null);
 

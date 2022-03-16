@@ -93,7 +93,7 @@ export const TankCore = ({ navigation, schema, formFields, title, nextScreen, na
                   <Controller
                     key={formFields.Name}
                     control={control}
-                    render={({ field: { value } }) => (
+                    render={({ field: { onChange } }) => (
                       <Hidden>
                         <Input size="md" onChangeText={(val) => onChange(val)} value={name} />
                       </Hidden>
@@ -312,6 +312,7 @@ TankCore.propTypes = {
     ReadingAfter: PropTypes.string,
     TotalDelivered: PropTypes.string,
     ImageUrl: PropTypes.string,
+    Name: PropTypes.string,
   }).isRequired,
   schema: PropTypes.shape({
     Product: PropTypes.string,

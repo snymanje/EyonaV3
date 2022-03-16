@@ -14,11 +14,14 @@ import {
   VStack,
   FlatList,
   Spinner,
+  View,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 
 import { TouchableOpacity } from 'react-native';
 import { DeliveriesContext } from '../../../services/deliveries/Deliveries.context';
+
+import { Map } from '../components/Map.component';
 
 export const MyDeliveriesScreen = ({ navigation }) => {
   const { deliveries, getMyDeliveries, isLoading } = useContext(DeliveriesContext);
@@ -59,7 +62,7 @@ export const MyDeliveriesScreen = ({ navigation }) => {
                   })
                 }
               >
-                <Box alignItems="center" mb={5}>
+                <Box mb={5}>
                   <Box
                     rounded="lg"
                     overflow="hidden"
@@ -78,14 +81,7 @@ export const MyDeliveriesScreen = ({ navigation }) => {
                     }}
                   >
                     <Box>
-                      <AspectRatio w="100%" ratio={16 / 9}>
-                        <Image
-                          source={{
-                            uri: 'https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg',
-                          }}
-                          alt="image"
-                        />
-                      </AspectRatio>
+                      <Map delivery={item} />
                       <Center
                         bg="violet.500"
                         _dark={{
@@ -101,13 +97,13 @@ export const MyDeliveriesScreen = ({ navigation }) => {
                         px="3"
                         py="1.5"
                       >
-                        PHOTOS
+                        {item.sitename}
                       </Center>
                     </Box>
                     <Stack p="4" space={3}>
                       <Stack space={2}>
                         <Heading size="md" ml="-1">
-                          The Garden City
+                          {item.ordernumber}
                         </Heading>
                         <Text
                           fontSize="xs"
@@ -121,13 +117,13 @@ export const MyDeliveriesScreen = ({ navigation }) => {
                           ml="-0.5"
                           mt="-1"
                         >
-                          The Silicon Valley of India.
+                          {item.sitename}
                         </Text>
                       </Stack>
-                      <Text fontWeight="400">
+                      {/*  <Text fontWeight="400">
                         Bengaluru (also called Bangalore) is the center of India's high-tech industry. The city is also
                         known for its parks and nightlife.
-                      </Text>
+                      </Text> */}
                       <HStack alignItems="center" space={4} justifyContent="space-between">
                         <HStack alignItems="center">
                           <Text
